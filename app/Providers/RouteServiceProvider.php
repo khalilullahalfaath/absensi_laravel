@@ -36,5 +36,8 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
         });
+
+        // Bind the SessionController to the App\Http\Controllers\SessionController class.
+        $this->app->bind('SessionController', 'App\Http\Controllers\SessionController');
     }
 }

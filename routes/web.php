@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SessionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +25,10 @@ Route::get('/home', function () {
 Route::get('/home2', function () {
     return view('view2');
 });
+
+Route::middleware('auth')->get('/attendance', function () {
+    return view('attendance.index');
+});
+
+Route::get('/sessions', 'SessionController@index')->name('sessions');;
+Route::post('/sessions/login', 'SessionController@login');
