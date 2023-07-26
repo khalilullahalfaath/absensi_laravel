@@ -5,7 +5,7 @@
 <div class="container mt-5 mb-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="card">
+            <div class="card" style="background-color: rgba(255, 255, 255, 0.85)";>
                 <div class="card-header">
                     <h4 class="text-center">Registrasi Akun Presensi</h4>
                 </div>
