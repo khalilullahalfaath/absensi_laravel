@@ -37,4 +37,5 @@ Route::post('/sessions/create', 'SessionController@create');
 
 Route::get('/attendance', 'AttendanceController@attendance')->middleware('auth');
 Route::post('/attendance/create', 'AttendanceController@create')->middleware('auth');
+Route::get('/attendance/all-data', [AttendanceController::class, 'showAllData'])->name('attendance.allData');
 

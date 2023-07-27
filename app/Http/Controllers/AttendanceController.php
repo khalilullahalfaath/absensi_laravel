@@ -44,25 +44,51 @@ class AttendanceController extends Controller
         // if success
         return redirect('home')->with('success', 'absensi berhasil');
     } else {
-        
-        return redirect('attendance')->withErrors('absensi gagal');
+        return redirect('home')->withErrors($result['message']);
     }
 }
 
 
     public function checkIn(Request $request)
     {
-        // dd($request->all());
-        // Store check-in data
-        $checkInData = [
-            'tanggal_presensi' => $request->date,
-            'jam_masuk' => $request->time,
-            'user_id' => Auth::id(),
-        ];
+    // Get the current date and time
+    $currentDateTime = now();
 
-        AbsensiCheckIn::create($checkInData);
+    // Parse the input date and time from the request
+    $inputDate = $request->date;
+    $inputTime = $request->time;
 
-        return ['success' => true, 'message' => 'Check-in successful'];
+    // Combine the input date and time and create a DateTime object
+    $inputDateTime = \DateTime::createFromFormat('Y-m-d H:i', "{$inputDate} {$inputTime}");
+
+    // Check if the input date and time are valid
+    if (!$inputDateTime || $inputDateTime->format('Y-m-d H:i') !== "{$inputDate} {$inputTime}") {
+        return ['success' => false, 'message' => 'Invalid date or time format.'];
+    }
+
+    // Check if the input date and time are after the current date and time
+    if ($inputDateTime > $currentDateTime) {
+        return ['success' => false, 'message' => 'Cannot check in for future dates.'];
+    }
+
+    // Set the date portion of the $sixAM DateTime object to be the same as the input date
+    $sixAM = \DateTime::createFromFormat('Y-m-d H:i', "{$inputDate} 06:00");
+
+    // Check if the input time is before 6 AM
+    if ($inputDateTime < $sixAM) {
+        return ['success' => false, 'message' => 'You can only check in after 6 AM.'];
+    }
+
+    // Store check-in data
+    $checkInData = [
+        'tanggal_presensi' => $request->date,
+        'jam_masuk' => $request->time,
+        'user_id' => Auth::id(),
+    ];
+
+    AbsensiCheckIn::create($checkInData);
+
+    return ['success' => true, 'message' => 'Check-in successful'];
     }
 
     public function checkOut(Request $request)
@@ -90,6 +116,7 @@ class AttendanceController extends Controller
         $workHours = $this->calculateWorkHours($checkintime, $checkouttime);
 
         $recordData = [
+            'user_id'  => Auth::id(),  
             'absensi_check_in_id' => $checkInRecord->id,
             'absensi_check_out_id' => $checkOutRecord->id,
             'jam_kerja' => $workHours,
@@ -119,5 +146,21 @@ class AttendanceController extends Controller
     $minutes = floor(($workHoursInSeconds % 3600) / 60);
 
     return sprintf('%02d:%02d', $hours, $minutes);
+}
+
+public function showAllData()
+{
+    $userId = Auth::id();
+
+    // Retrieve all check-in records for the authenticated user
+    $checkInRecords = AbsensiCheckIn::where('user_id', $userId)->get();
+
+    // Retrieve all check-out records for the authenticated user
+    $checkOutRecords = AbsensiCheckOut::where('user_id', $userId)->get();
+
+    // Retrieve all records for the authenticated user
+    $records = Record::where('user_id', $userId)->get();
+
+    return view('attendance.all_data', compact('checkInRecords', 'checkOutRecords', 'records'));
 }
 }

@@ -24,7 +24,7 @@
 
                 <!-- History link -->
                 <li class="nav-item">
-                    <a class="nav-link" href="/attendance/history">History</a>
+                    <a class="nav-link" href="/attendance/all-data">History</a>
                 </li>
 
                 <!-- Logout link -->
