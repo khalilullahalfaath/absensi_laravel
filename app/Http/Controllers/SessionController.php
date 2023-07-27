@@ -37,7 +37,8 @@ class SessionController extends Controller
         }
     }
 
-    function logout(){
+    function logout()
+    {
         Auth::logout();
         return redirect('sessions')->with('success', 'Logout berhasil');
     }
