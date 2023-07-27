@@ -30,10 +30,8 @@ Route::middleware('auth')->get('/attendance', function () {
     return view('attendance.index');
 });
 
-Route::get('/registration', function () {
-    return view('sessions.register');
-});
-
 Route::get('/sessions', 'SessionController@index')->name('sessions');;
 Route::post('/sessions/login', 'SessionController@login');
 Route::post('/sessions/logout', 'SessionController@logout')->middleware('auth');
+Route::get('/sessions/register', 'SessionController@register');
+Route::post('/sessions/create', 'SessionController@create');

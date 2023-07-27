@@ -10,37 +10,41 @@
                     <h4 class="text-center">Registrasi Akun Presensi</h4>
                 </div>
                 <div class="card-body">
-                    <form action="/register" method="POST">
+                    <form action="/sessions/create" method="POST">
                         @csrf
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label for="email">Email</label>
-                            <input type="email" name="email" class="form-control" required>
+                            <input type="email" name="email" class="form-control" value="{{Session::get('email')}}" required>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label for="password">Password</label>
-                            <input type="password" name="password" class="form-control" required>
+                            <input type="password" name="password" class="form-control" value="{{Session::get('password')}}" required>
                         </div>
-                        <div class="form-group">
-                            <label for="name">Nama</label>
-                            <input type="text" name="name" class="form-control" required>
+                        <div class="form-group mb-3">
+                            <label for="nama">Nama</label>
+                            <input type="text" name="nama" class="form-control" value="{{Session::get('nama')}}" required>
                         </div>
-                        <div class="form-group">
-                            <label for="work_unit">Unit Kerja</label>
-                            <input type="text" name="work_unit" class="form-control" required>
+                        <div class="form-group mb-3">
+                            <label for="nama_unit_kerja">Nama Unit Kerja</label>
+                            <input type="text" name="nama_unit_kerja" class="form-control" value="{{Session::get('nama_unit_kerja')}}" required>
                         </div>
-                        <div class="form-group">
-                            <label for="agency_origin">Asal Institusi</label>
-                            <input type="text" name="agency_origin" class="form-control" required>
+                        <div class="form-group mb-3">
+                            <label for="asal_instansi">Asal Instansi</label>
+                            <input type="text" name="asal_instansi" class="form-control" value="{{Session::get('asal_instansi')}}" required>
                         </div>
-                        <div class="form-group">
-                            <label for="sex">Jenis Kelamin</label>
-                            <select name="sex" class="form-control" required>
+                        <div class="form-group mb-3">
+                            <label for="jenis_kelamin">Jenis Kelamin</label>
+                            <select name="jenis_kelamin" class="form-control" required>
                                 <option value="">Pilih jenis kelamin</option>
-                                <option value="Male">Laki-laki</option>
-                                <option value="Female">Perempuan</option>
+                                <option value="Male" {{ Session::get('jenis_kelamin') === 'laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                                <option value="Female" {{ Session::get('jenis_kelamin') === 'perempuan' ? 'selected' : '' }}>Perempuan</option>
                             </select>
                         </div>
-                        <div class="text-center">
+                        <div class="form-group mb-3">
+                            <label for="tanggal_lahir">Tanggal Lahir</label>
+                            <input type="date" name="tanggal_lahir" class="form-control" value="{{ Session::get('tanggal_lahir') }}" required>
+                        </div>
+                        <div class="text-center mt-3">
                             <button type="submit" class="btn btn-primary">Register</button>
                         </div>
                     </form>

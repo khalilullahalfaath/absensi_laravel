@@ -14,7 +14,9 @@
     <title>Halaman Laravel</title>
 </head>
 <body>
+    @if (Auth::check())
     @include('components/menu')
+    @endif
     @yield('content')
 </body>
 
