@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('absensi_checkout', function (Blueprint $table) {
+        Schema::table('absensi_check_outs', function (Blueprint $table) {
             // create column users_id to absensi_check_out
-            $table->unsignedBigInteger('users_id');
+            $table->unsignedBigInteger('user_id');
             // create foreign key to users table
-            $table->foreign('users_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -24,11 +24,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('absensi_checkout', function (Blueprint $table) {
+        Schema::table('absensi_check_outs', function (Blueprint $table) {
             // drop foreign key
-            $table->dropForeign(['users_id']);
+            $table->dropForeign(['user_id']);
             // drop column users_id
-            $table->dropColumn('users_id');
+            $table->dropColumn('user_id');
         });
     }
 };

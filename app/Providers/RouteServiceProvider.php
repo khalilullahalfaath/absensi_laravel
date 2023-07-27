@@ -39,5 +39,7 @@ class RouteServiceProvider extends ServiceProvider
 
         // Bind the SessionController to the App\Http\Controllers\SessionController class.
         $this->app->bind('SessionController', 'App\Http\Controllers\SessionController');
+
+        $this->app->bind('AttendanceController', 'App\Http\Controllers\AttendanceController');
     }
 }

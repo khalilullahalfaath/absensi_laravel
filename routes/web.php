@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\AttendanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,12 +27,14 @@ Route::get('/home', function () {
 //     return view('view2');
 // });
 
-Route::middleware('auth')->get('/attendance', function () {
-    return view('attendance.index');
-});
+
 
 Route::get('/sessions', 'SessionController@index')->name('sessions');;
 Route::post('/sessions/login', 'SessionController@login');
 Route::post('/sessions/logout', 'SessionController@logout')->middleware('auth');
 Route::get('/sessions/register', 'SessionController@register');
 Route::post('/sessions/create', 'SessionController@create');
+
+Route::get('/attendance', 'AttendanceController@attendance')->middleware('auth');
+Route::post('/attendance/create', 'AttendanceController@create')->middleware('auth');
+

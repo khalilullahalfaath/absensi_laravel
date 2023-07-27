@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('absensi_checkin', function (Blueprint $table) {
+        Schema::table('absensi_check_ins', function (Blueprint $table) {
             // create column users_id to absensi_checke
-            $table->unsignedBigInteger('users_id');
+            $table->unsignedBigInteger('user_id');
             // create foreign key to users table
-            $table->foreign('users_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -24,11 +24,12 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('absensi_checkin', function (Blueprint $table) {
-            // drop foreign key
-            $table->dropForeign(['users_id']);
-            // drop column users_id
-            $table->dropColumn('users_id');
+        Schema::table('absensi_check_ins', function (Blueprint $table) {
+            // Check if the foreign key constraints exist and drop them
+            if (Schema::hasColumn('absensi_check_ins', 'user_id')) {
+                // Drop any foreign key constraints that reference the user_id column
+                $table->dropForeign(['user_id']);
+            }
         });
     }
 };
