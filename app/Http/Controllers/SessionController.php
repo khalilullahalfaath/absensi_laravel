@@ -13,9 +13,6 @@ class SessionController extends Controller
     }
 
     function login(Request  $request){
-        echo $request->email;
-        dd();
-
         $request->session()->flash('email', $request->email);
         //validation email and password must be required
         $request->validate([
@@ -34,7 +31,7 @@ class SessionController extends Controller
 
         if(Auth::attempt($infologin)){
             // if success
-            return redirect('attendance')->with('success', 'Login berhasil');
+            return redirect('home')->with('success', 'Login berhasil');
         }else{
             return redirect('sessions')->withErrors('Email atau password salah');
         }

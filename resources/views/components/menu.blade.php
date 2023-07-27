@@ -7,7 +7,10 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/attendance">Isi Kehadiran</a>
+            <a class="nav-link" aria-current="page" href="home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/attendance">Isi Kehadiran</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/attendance/history">History</a>

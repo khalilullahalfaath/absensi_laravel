@@ -19,7 +19,7 @@ Route::get('/', function () {
 });
 
 Route::get('/home', function () {
-    return view('view');
+    return view('home');
 });
 
 Route::get('/home2', function () {
