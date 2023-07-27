@@ -23,7 +23,12 @@
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control">
+                    <div class="input-group">
+                        <input type="password" name="password" id="password" class="form-control">
+                        <div class="input-group-append">
+                            <button type="button" id="togglePassword" class="btn btn-outline-secondary"><i class="bi bi-eye"></i></button>
+                        </div>
+                    </div>
                 </div>
                 <div class="mb-3 d-grid">
                     <button name="submit" type="submit" class="btn btn-primary">Login</button>
@@ -35,7 +40,28 @@
         </div>
     </div>
 
+    <!-- Add Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Add Bootstrap icons CSS link -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+
+
     
+    <!-- Add jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Add custom JavaScript -->
+    <script>
+        $(document).ready(function () {
+            // Function to toggle password visibility
+            $('#togglePassword').click(function () {
+                var passwordInput = $('#password');
+                var type = passwordInput.attr('type') === 'password' ? 'text' : 'password';
+                passwordInput.attr('type', type);
+                $(this).find('i').toggleClass('bi-eye bi-eye-slash');
+            });
+        });
+    </script>
 </body>
 @endsection
-

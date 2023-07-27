@@ -13,6 +13,8 @@ class SessionController extends Controller
     }
 
     function login(Request  $request){
+        echo $request->email;
+        dd();
 
         $request->session()->flash('email', $request->email);
         //validation email and password must be required
@@ -36,5 +38,10 @@ class SessionController extends Controller
         }else{
             return redirect('sessions')->withErrors('Email atau password salah');
         }
+    }
+
+    function logout(){
+        Auth::logout();
+        return redirect('sessions')->with('success', 'Logout berhasil');
     }
 }

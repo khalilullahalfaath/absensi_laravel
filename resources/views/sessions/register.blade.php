@@ -21,23 +21,23 @@
                             <input type="password" name="password" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <label for="name">Name</label>
+                            <label for="name">Nama</label>
                             <input type="text" name="name" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <label for="work_unit">Work Unit</label>
+                            <label for="work_unit">Unit Kerja</label>
                             <input type="text" name="work_unit" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <label for="agency_origin">Agency Origin</label>
+                            <label for="agency_origin">Asal Institusi</label>
                             <input type="text" name="agency_origin" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <label for="gender">Gender</label>
-                            <select name="gender" class="form-control" required>
-                                <option value="">Select Gender</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
+                            <label for="sex">Jenis Kelamin</label>
+                            <select name="sex" class="form-control" required>
+                                <option value="">Pilih jenis kelamin</option>
+                                <option value="Male">Laki-laki</option>
+                                <option value="Female">Perempuan</option>
                             </select>
                         </div>
                         <div class="text-center">
@@ -52,6 +52,22 @@
         </div>
     </div>
 </div>
-    
+{{-- Jquery --}}
+ <!-- Add jQuery -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+ <!-- Add custom JavaScript -->
+    <!-- Add custom JavaScript -->
+    <script>
+        $(document).ready(function () {
+            // Find all input elements with the "required" attribute
+            $('input[required], select[required]').each(function () {
+                // Get the associated label element
+                var label = $("label[for='" + $(this).attr('name') + "']");
+                // Add "(required)" text to the label
+                label.append(' <span class="required-text">(required)</span>');
+            });
+        });
+    </script>
 </body>
 @endsection

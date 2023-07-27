@@ -36,3 +36,4 @@ Route::get('/registration', function () {
 
 Route::get('/sessions', 'SessionController@index')->name('sessions');;
 Route::post('/sessions/login', 'SessionController@login');
+Route::post('/sessions/logout', 'SessionController@logout')->middleware('auth');;

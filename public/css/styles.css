@@ -1,0 +1,9 @@
+/* Style for "(required)" text */
+.required-text {
+    color: gray;
+}
+.required-text::before {
+    content: '*';
+    color: red;
+    margin-right: 2px;
+}
