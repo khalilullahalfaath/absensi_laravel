@@ -37,5 +37,14 @@ Route::post('/sessions/create', 'SessionController@create');
 
 Route::get('/attendance', 'AttendanceController@attendance')->middleware('auth');
 Route::post('/attendance/create', 'AttendanceController@create')->middleware('auth');
-Route::get('/attendance/all-data', [AttendanceController::class, 'showAllData'])->name('attendance.allData');
+Route::get('/attendance/all-data', [AttendanceController::class, 'showAllData'])->name('attendance.allData')->middleware('auth');
+
+Route::get('/print/checkin/csv/{id}', 'AttendanceController@printCheckInToCSV')->name('print.checkin.csv')->middleware('auth');
+Route::get('/print/checkout/csv/{id}', 'AttendanceController@printCheckOutToCSV')->name('print.checkout.csv')->middleware('auth');
+Route::get('/print/record/csv/{id}', 'AttendanceController@printRecordToCSV')->name('print.record.csv')->middleware('auth');
+
+Route::get('print/checkin/csv', 'AttendanceController@printAllCheckInToCSV')->name('print.checkin.csv')->middleware('auth');
+Route::get('print/checkout/csv', 'AttendanceController@printAllCheckoutToCSV')->name('print.checkout.csv')->middleware('auth');
+Route::get('print/records/csv', 'AttendanceController@printAllRecordToCSV')->name('print.records.csv')->middleware('auth');
+
 

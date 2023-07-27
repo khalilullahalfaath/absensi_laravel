@@ -8,6 +8,8 @@ use App\Models\AbsensiCheckIn;
 use App\Models\AbsensiCheckOut;
 use App\Models\Record;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Response;
+use PDF; 
 
 class AttendanceController extends Controller
 {
@@ -163,4 +165,112 @@ public function showAllData()
 
     return view('attendance.all_data', compact('checkInRecords', 'checkOutRecords', 'records'));
 }
+
+public function printCheckInToCSV($id)
+    {
+        $checkInRecord = AbsensiCheckIn::findOrFail($id);
+        $csvContent = "Tanggal Presensi,Jam Masuk\n";
+        $csvContent .= "{$checkInRecord->tanggal_presensi},{$checkInRecord->jam_masuk}\n";
+
+        $headers = [
+            'Content-type'        => 'text/csv',
+            'Content-Disposition' => 'attachment; filename=checkin_record.csv',
+        ];
+
+        return response($csvContent, 200, $headers);
+    }
+
+    public function printCheckOutToCSV($id)
+    {
+        $checkOutRecord = AbsensiCheckOut::findOrFail($id);
+        $csvContent = "Tanggal Presensi,Jam Keluar\n";
+        $csvContent .= "{$checkOutRecord->tanggal_presensi},{$checkOutRecord->jam_keluar}\n";
+
+        $headers = [
+            'Content-type'        => 'text/csv',
+            'Content-Disposition' => 'attachment; filename=checkout_record.csv',
+        ];
+
+        return response($csvContent, 200, $headers);
+    }
+
+
+    public function printRecordToCSV($id)
+    {
+        $record = Record::findOrFail($id);
+        $csvContent = "Tanggal Presensi,Jam Masuk,Jam Keluar,Jam Kerja\n";
+        $csvContent .= "{$record->absensiCheckIn->tanggal_presensi},{$record->absensiCheckIn->jam_masuk},{$record->absensiCheckOut->jam_keluar},{$record->jam_kerja}\n";
+
+        $headers = [
+            'Content-type'        => 'text/csv',
+            'Content-Disposition' => 'attachment; filename=record.csv',
+        ];
+
+        return response($csvContent, 200, $headers);
+    }
+
+    public function printAllCheckInToCSV()
+    {
+        $userId = Auth::id();
+
+        // Retrieve all records for the authenticated user
+        $checkInRecords = AbsensiCheckIn::where('user_id', $userId)->get();
+
+        $csvContent = "Tanggal Presensi,Jam Masuk\n";
+        foreach ($checkInRecords as $checkInRecord) {
+            $csvContent .= "{$checkInRecord->tanggal_presensi},{$checkInRecord->jam_masuk}\n";
+        }
+
+        $headers = [
+            'Content-type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename=all_checkin_records.csv',
+        ];
+
+        return response($csvContent, 200, $headers);
+    }
+
+
+    public function printAllCheckOutToCSV()
+    {
+        $userId = Auth::id();
+
+        // Retrieve all records for the authenticated user
+        $checkOutRecords = AbsensiCheckOut::where('user_id', $userId)->get();
+
+        $csvContent = "Tanggal Presensi,Jam Keluar\n";
+        foreach ($checkOutRecords as $checkOutRecord) {
+            $csvContent .= "{$checkOutRecord->tanggal_presensi},{$checkOutRecord->jam_keluar}\n";
+        }
+
+        $headers = [
+            'Content-type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename=all_checkout_records.csv',
+        ];
+
+        return response($csvContent, 200, $headers);
+    }
+
+
+    public function printAllRecordToCSV()
+    {
+        $userId = Auth::id();
+
+        // Retrieve all records for the authenticated user
+        $records = Record::where('user_id', $userId)->get();
+
+        $csvContent = "Tanggal Presensi,Jam Masuk,Jam Keluar,Jam Kerja\n";
+        foreach ($records as $record) {
+            $csvContent .= "{$record->absensiCheckIn->tanggal_presensi},{$record->absensiCheckIn->jam_masuk},{$record->absensiCheckOut->jam_keluar},{$record->jam_kerja}\n";
+        }
+
+        $headers = [
+            'Content-type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename=all_records.csv',
+        ];
+
+        return response($csvContent, 200, $headers);
+    }
+
+
+
 }
