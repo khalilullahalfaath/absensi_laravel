@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 class SessionController extends Controller
 {
     function index(){
-        return view('sessions.index');
+        return view('sessions/index');
     }
 
     function login(Request  $request){

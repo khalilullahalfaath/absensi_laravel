@@ -40,17 +40,6 @@
         </div>
     </div>
 
-    <!-- Add Bootstrap CSS link -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
-    <!-- Add Bootstrap icons CSS link -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-
-
-    
-    <!-- Add jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <!-- Add custom JavaScript -->
     <script>
         $(document).ready(function () {

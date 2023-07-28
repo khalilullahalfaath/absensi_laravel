@@ -56,10 +56,6 @@
         </div>
     </div>
 </div>
-{{-- Jquery --}}
- <!-- Add jQuery -->
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-
  <!-- Add custom JavaScript -->
     <!-- Add custom JavaScript -->
     <script>
