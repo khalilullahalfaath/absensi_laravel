@@ -25,5 +25,5 @@
     </table>
 </div>
 <div class="mt-3 mb-3 d-flex justify-content-center">
-    <a href="{{ route('print.records.csv') }}" class="btn btn-primary">Print All Check-in to CSV</a>
+    <a href="{{ route('print.allrecords.csv') }}" class="btn btn-primary">Print All Check-in to CSV</a>
 </div>

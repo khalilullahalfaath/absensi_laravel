@@ -34,6 +34,11 @@ class SessionController extends Controller
         if(Auth::attempt($infologin)){
             // if success
             return redirect('home')->with('success', 'Login berhasil');
+            if (Auth::user()->role == 0) {
+                return redirect('admin.index')->with('success', 'Login berhasil');
+            } else {
+                return redirect('home')->with('success', 'Login berhasil');
+            }
         }else{
             return redirect('sessions')->withErrors('Email atau password salah');
         }
@@ -104,10 +109,10 @@ class SessionController extends Controller
             'password' => $request->password
         ];
     
-
+        // dd($infologin);
         if(Auth::attempt($infologin)){
             // if success
-            return redirect('home')->with('success', Auth::user()->nama . 'Login berhasil');
+            return redirect('home')->with('success', Auth::user()->nama . ' login berhasil');
         }else{
             return redirect('sessions')->withErrors('Email atau password salah');
         }

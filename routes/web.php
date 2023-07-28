@@ -23,6 +23,7 @@ Route::get('/home', function () {
     return view('home');
 });
 
+
 // Route::get('/home2', function () {
 //     return view('view2');
 // });
@@ -43,8 +44,8 @@ Route::get('/print/checkin/csv/{id}', 'AttendanceController@printCheckInToCSV')-
 Route::get('/print/checkout/csv/{id}', 'AttendanceController@printCheckOutToCSV')->name('print.checkout.csv')->middleware('auth');
 Route::get('/print/record/csv/{id}', 'AttendanceController@printRecordToCSV')->name('print.record.csv')->middleware('auth');
 
-Route::get('print/checkin/csv', 'AttendanceController@printAllCheckInToCSV')->name('print.checkin.csv')->middleware('auth');
-Route::get('print/checkout/csv', 'AttendanceController@printAllCheckoutToCSV')->name('print.checkout.csv')->middleware('auth');
-Route::get('print/records/csv', 'AttendanceController@printAllRecordToCSV')->name('print.records.csv')->middleware('auth');
+Route::get('print/checkin/csv', 'AttendanceController@printAllCheckInToCSV')->name('print.allcheckin.csv')->middleware('auth');
+Route::get('print/checkout/csv', 'AttendanceController@printAllCheckoutToCSV')->name('print.allcheckout.csv')->middleware('auth');
+Route::get('print/records/csv', 'AttendanceController@printAllRecordToCSV')->name('print.allrecords.csv')->middleware('auth');
 
 

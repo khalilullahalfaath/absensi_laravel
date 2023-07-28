@@ -27,7 +27,11 @@
     @endif
 
     @if (Auth::check())
-    @include('components/menu')
+        @if (Auth::user()->role == 0)
+            @include('admin.index') <!-- Include admin navigation bar -->
+        @else
+            @include('components.menu') <!-- Include regular user navigation bar -->
+        @endif
     @endif
     @yield('content')
 </body>
