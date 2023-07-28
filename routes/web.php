@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\AttendanceController;
@@ -23,16 +24,12 @@ Route::get('/home', function () {
     return view('home');
 })->middleware('auth');
 
-Route::get('/home', function () {
-    return view('home');
-})->middleware('auth');;
-
-
 // Route::get('/home2', function () {
 //     return view('view2');
 // });
 
-
+Route::middleware(['guest'])->group(function () {
+});
 
 Route::get('/sessions', 'SessionController@index')->name('sessions');;
 Route::post('/sessions/login', 'SessionController@login');
@@ -55,3 +52,7 @@ Route::get('print/records/csv', 'AttendanceController@printAllRecordToCSV')->nam
 // DASHBOARD
 
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard')->middleware('auth');
+
+
+// ADMIN
+Route::get('/home/admin', [AdminController::class, 'index'])->name('home.admin')->middleware('auth');

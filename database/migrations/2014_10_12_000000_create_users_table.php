@@ -16,12 +16,12 @@ return new class extends Migration
             // create role column
             // 0. admin
             // 1. user
-            $table->integer('role')->default(1);
-            $table->string('nama');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->integer("no_presensi");
+            $table->string('nama');
+            $table->enum('role',['user', 'admin']) -> default('user');
+            $table->string("no_presensi")->unique();
             $table->string('asal_instansi');
             $table->string('nama_unit_kerja');
             $table->string('jenis_kelamin');

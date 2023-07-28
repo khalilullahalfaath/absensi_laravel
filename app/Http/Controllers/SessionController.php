@@ -5,17 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\SessionController;
 use Illuminate\Support\Facades\Hash;
+
 
 class SessionController extends Controller
 {
-    function index(){
+    function index()
+    {
         return view('sessions/index');
     }
 
-    function login(Request  $request){
-        $request->session()->flash('email', $request->email);
+    function login(Request  $request)
+    {
         //validation email and password must be required
         $request->validate([
             'email' => 'required',
@@ -29,25 +30,25 @@ class SessionController extends Controller
             'email' => $request->email,
             'password' => $request->password
         ];
-    
 
-        if(Auth::attempt($infologin)){
-            // if success
-            // dd(Auth::user()->role);
-            if (Auth::user()->role === 0) {
-                return redirect('admin')->with('success', 'Login berhasil');
+
+        if (Auth::attempt($infologin)) {
+            // if login is successful, redirect to the appropriate page based on the user's role
+            if (Auth::user()->role === 'admin') {
+                return redirect('/home/admin')->with('success', 'Admin login successful');
             } else {
-                return redirect('home')->with('success', 'Login berhasil');
+                return redirect('/home')->with('success', Auth::user()->nama . ' login successful');
             }
-        }else{
-            return redirect('sessions')->withErrors('Email atau password salah');
+            exit();
+        } else {
+            return redirect('/sessions')->withErrors('Email or password is incorrect');
         }
     }
 
     function logout()
     {
         Auth::logout();
-        return redirect('sessions')->with('success', 'Logout berhasil');
+        return redirect('/sessions')->with('success', 'Logout berhasil');
     }
 
     function register()
@@ -56,16 +57,9 @@ class SessionController extends Controller
         return view('sessions.register');
     }
 
-    function create(Request  $request){
-        $request->session()->flash('nama', $request->nama);
-        $request->session()->flash('email', $request->email);
-        $request->session()->flash('password', $request->password);
-        $request->session()->flash('nomor_presensi', $request->nomor_presensi);
-        $request->session()->flash('asal_instansi', $request->asal_instansi);
-        $request->session()->flash('nama_unit_kerja', $request->nama_unit_kerja);
-        $request->session()->flash('jenis_kelamin', $request->jenis_kelamin);
-        $request->session()->flash('tanggal_lahir', $request->tanggal_lahir);
-        
+    function create(Request  $request)
+    {
+
         // validate all input must be required with custom error
         $request->validate([
             'nama' => 'required',
@@ -89,13 +83,11 @@ class SessionController extends Controller
             'jenis_kelamin.required' => 'Jenis kelamin harus diisi',
             'tanggal_lahir.required' => 'Tanggal lahir harus diisi'
         ]);
-        
-        
-        // dd($request->all());
+
         $data = [
             'nama' => $request->nama,
             'email' => $request->email,
-            'role'=> 1,
+            'role' => 'user',
             'password' => Hash::make($request->password),
             'no_presensi' => $request->no_presensi,
             'asal_instansi' => $request->asal_instansi,
@@ -103,22 +95,19 @@ class SessionController extends Controller
             'jenis_kelamin' => $request->jenis_kelamin,
             'tanggal_lahir' => $request->tanggal_lahir
         ];
-        
-        // dd($request->all());
-        User::create($data);
 
-        $infologin = [
-            'email' => $request->email,
-            'password' => $request->password
-        ];
-    
-        // dd($infologin);
-        if(Auth::attempt($infologin)){
-            // if success
-            return redirect('home')->with('success', Auth::user()->nama . ' login berhasil');
-        }else{
-            return redirect('sessions')->withErrors('Email atau password salah');
+
+        try {
+            // Attempt to create a new user in the database
+            User::create($data);
+
+            // If the user is created successfully, you can redirect or do something else
+            return redirect('/sessions')->with('success', 'Registration successful. You can now log in.');
+        } catch (\Exception $e) {
+            // If there's an error during the user creation, catch the exception
+            // and handle the error accordingly (e.g., log the error, show an error message, etc.)
+            // For debugging purposes, you can also use dd($e) to inspect the exception
+            dd($e);
         }
-
     }
 }
