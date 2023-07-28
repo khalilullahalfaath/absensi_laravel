@@ -21,7 +21,11 @@ Route::get('/', function () {
 
 Route::get('/home', function () {
     return view('home');
-});
+})->middleware('auth');
+
+Route::get('/home', function () {
+    return view('home');
+})->middleware('auth');;
 
 
 // Route::get('/home2', function () {
@@ -48,4 +52,6 @@ Route::get('print/checkin/csv', 'AttendanceController@printAllCheckInToCSV')->na
 Route::get('print/checkout/csv', 'AttendanceController@printAllCheckoutToCSV')->name('print.allcheckout.csv')->middleware('auth');
 Route::get('print/records/csv', 'AttendanceController@printAllRecordToCSV')->name('print.allrecords.csv')->middleware('auth');
 
+// DASHBOARD
 
+Route::get('/dashboard', 'DashboardController@index')->name('dashboard')->middleware('auth');

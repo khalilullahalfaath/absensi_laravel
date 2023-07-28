@@ -33,9 +33,9 @@ class SessionController extends Controller
 
         if(Auth::attempt($infologin)){
             // if success
-            return redirect('home')->with('success', 'Login berhasil');
-            if (Auth::user()->role == 0) {
-                return redirect('admin.index')->with('success', 'Login berhasil');
+            // dd(Auth::user()->role);
+            if (Auth::user()->role === 0) {
+                return redirect('admin')->with('success', 'Login berhasil');
             } else {
                 return redirect('home')->with('success', 'Login berhasil');
             }
@@ -57,20 +57,21 @@ class SessionController extends Controller
     }
 
     function create(Request  $request){
-        // dd($request->all());
         $request->session()->flash('nama', $request->nama);
         $request->session()->flash('email', $request->email);
         $request->session()->flash('password', $request->password);
+        $request->session()->flash('nomor_presensi', $request->nomor_presensi);
         $request->session()->flash('asal_instansi', $request->asal_instansi);
         $request->session()->flash('nama_unit_kerja', $request->nama_unit_kerja);
         $request->session()->flash('jenis_kelamin', $request->jenis_kelamin);
         $request->session()->flash('tanggal_lahir', $request->tanggal_lahir);
-
+        
         // validate all input must be required with custom error
         $request->validate([
             'nama' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8',
+            'no_presensi' => 'required',
             'asal_instansi' => 'required',
             'nama_unit_kerja' => 'required',
             'jenis_kelamin' => 'required',
@@ -82,6 +83,7 @@ class SessionController extends Controller
             'email.unique' => 'Email sudah terdaftar',
             'password.required' => 'Password harus diisi',
             'password.min' => 'Password minimal 8 karakter',
+            'no_presensi.required' => 'Nomor presensi harus diisi',
             'asal_instansi.required' => 'Asal instansi harus diisi',
             'nama_unit_kerja.required' => 'Nama unit kerja harus diisi',
             'jenis_kelamin.required' => 'Jenis kelamin harus diisi',
@@ -95,12 +97,13 @@ class SessionController extends Controller
             'email' => $request->email,
             'role'=> 1,
             'password' => Hash::make($request->password),
+            'no_presensi' => $request->no_presensi,
             'asal_instansi' => $request->asal_instansi,
             'nama_unit_kerja' => $request->nama_unit_kerja,
             'jenis_kelamin' => $request->jenis_kelamin,
             'tanggal_lahir' => $request->tanggal_lahir
         ];
-
+        
         // dd($request->all());
         User::create($data);
 

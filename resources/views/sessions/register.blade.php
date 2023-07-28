@@ -25,6 +25,10 @@
                             <input type="text" name="nama" class="form-control" value="{{Session::get('nama')}}" required>
                         </div>
                         <div class="form-group mb-3">
+                            <label for="no_presensi">No presensi</label>
+                            <input type="number" name="no_presensi" class="form-control" value="{{Session::get('no_presensi')}}" required>
+                        </div>
+                        <div class="form-group mb-3">
                             <label for="nama_unit_kerja">Nama Unit Kerja</label>
                             <input type="text" name="nama_unit_kerja" class="form-control" value="{{Session::get('nama_unit_kerja')}}" required>
                         </div>

@@ -21,6 +21,7 @@ class User extends Authenticatable
         'nama',
         'email',
         'password',
+        'no_presensi',
         'asal_instansi',
         'nama_unit_kerja',
         'jenis_kelamin',

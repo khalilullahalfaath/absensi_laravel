@@ -73,6 +73,13 @@ class AttendanceController extends Controller
         return ['success' => false, 'message' => 'Cannot check in for future dates.'];
     }
 
+    //  TODO: Check if the input date is a weekend
+    // TODO: Check if the clock is not within the check-in time range
+    // TODO: Check if the user has already checked in for the given date
+
+    // TODO: check if the time right now is in the future
+
+
     // Set the date portion of the $sixAM DateTime object to be the same as the input date
     $sixAM = \DateTime::createFromFormat('Y-m-d H:i', "{$inputDate} 06:00");
 

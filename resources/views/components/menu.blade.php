@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <!-- Brand logo or name -->
-        <a class="navbar-brand" href="#">Aplikasi Presensi Magang LEN</a>
+        <a class="navbar-brand" href="/home">Aplikasi Presensi Magang LEN</a>
 
         <!-- Navbar toggler button for small screens -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -14,7 +14,7 @@
             <ul class="navbar-nav">
                 <!-- Home link -->
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="home">Home</a>
+                    <a class="nav-link" aria-current="page" href="/home">Home</a>
                 </li>
 
                 <!-- Isi Kehadiran link -->

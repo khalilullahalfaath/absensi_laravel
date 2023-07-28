@@ -18,6 +18,7 @@ class UsersTableSeeders extends Seeder
             'nama' => 'admin',
             'email' => 'admin@gmail.com',
             'role'=> 0,
+            'no_presensi' => 123456,
             'password' => Hash::make('haloIniAdalahPassword123456'),
             'asal_instansi' => 'admin',
             'nama_unit_kerja' => 'admin',
