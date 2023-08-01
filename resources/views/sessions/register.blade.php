@@ -21,6 +21,7 @@
                 <div class="card-body">
                     <form action="/sessions/create" method="POST">
                         @csrf
+                        {{-- TODO: add confirmed password --}}
                         <div class="form-group mb-3">
                             <label for="email">Email</label>
                             <input type="email" name="email" class="form-control" value="{{Session::get('email')}}" required>
