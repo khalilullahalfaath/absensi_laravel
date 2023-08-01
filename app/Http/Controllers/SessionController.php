@@ -62,26 +62,33 @@ class SessionController extends Controller
 
         // validate all input must be required with custom error
         $request->validate([
-            'nama' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8',
-            'no_presensi' => 'required',
-            'asal_instansi' => 'required',
-            'nama_unit_kerja' => 'required',
-            'jenis_kelamin' => 'required',
-            'tanggal_lahir' => 'required'
+            'nama' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,',
+            'password' => 'required|string|min:8',
+            'no_presensi' => 'required|string|max:255|unique:users,no_presensi,',
+            'asal_instansi' => 'required|string|max:255',
+            'nama_unit_kerja' => 'required|string|max:255',
+            'jenis_kelamin' => 'required|string|max:255',
+            'tanggal_lahir' => 'required|date',
         ], [
+            // custom error message
+
             'nama.required' => 'Nama harus diisi',
+            'nama.max' => 'Nama maksimal 255 karakter',
             'email.required' => 'Email harus diisi',
             'email.email' => 'Email tidak valid',
             'email.unique' => 'Email sudah terdaftar',
             'password.required' => 'Password harus diisi',
             'password.min' => 'Password minimal 8 karakter',
             'no_presensi.required' => 'Nomor presensi harus diisi',
+            'no_presensi.unique' => 'Nomor presensi sudah terdaftar',
             'asal_instansi.required' => 'Asal instansi harus diisi',
+            'asal_instansi.max' => 'Asal instansi maksimal 255 karakter',
             'nama_unit_kerja.required' => 'Nama unit kerja harus diisi',
+            'nama_unit_kerja.max' => 'Nama unit kerja maksimal 255 karakter',
             'jenis_kelamin.required' => 'Jenis kelamin harus diisi',
-            'tanggal_lahir.required' => 'Tanggal lahir harus diisi'
+            'tanggal_lahir.required' => 'Tanggal lahir harus diisi',
+            'tanggal_lahir.date' => 'Tanggal lahir tidak valid'
         ]);
 
         $data = [

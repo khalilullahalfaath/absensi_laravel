@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\AttendanceController;
 
@@ -56,3 +57,9 @@ Route::get('/dashboard', 'DashboardController@index')->name('dashboard')->middle
 
 // ADMIN
 Route::get('/home/admin', [AdminController::class, 'index'])->name('home.admin')->middleware('auth');
+
+Route::get('admin/users/{user}/edit', 'UserController@editUser')->name('admin.users.edit');
+Route::put('admin/users/{user}', 'UserController@updateUser')->name('admin.users.update');
+Route::delete('admin/users/{user}', 'UserController@destroy')->name('admin.users.destroy');
+
+Route::get('/admin/users', [UserController::class, 'showAllData'])->name('admin.users')->middleware('auth');
