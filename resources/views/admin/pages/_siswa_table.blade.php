@@ -4,6 +4,8 @@
         <thead>
             <!-- Table header -->
             <tr>
+                <th>No.</th>
+                <th>ID</th>
                 <th>Nama</th>
                 <th>Email</th>
                 <th>No. Presensi</th>
@@ -18,6 +20,8 @@
             @foreach ($userRecords as $userRecord)
             <tr id="user_{{ $userRecord->id }}">
                 <!-- Display user record data -->
+                <td data-field="no">{{ $loop->iteration }}</td>
+                <td data-field="id">{{ $userRecord->id }}</td>
                 <td data-field="nama">{{ $userRecord->nama }}</td>
                 <td data-field="email">{{ $userRecord->email }}</td>
                 <td data-field="no_presensi">{{ $userRecord->no_presensi }}</td>
@@ -30,7 +34,6 @@
                     <button class="btn btn-primary edit-btn" data-userid="{{ $userRecord->id }}">Edit</button>
             
                     <!-- Delete button -->
-
                     <button class="btn btn-danger delete-btn" onclick="confirmDelete('{{ route('admin.users.destroy', $userRecord) }}')">Delete</button>
 
                     

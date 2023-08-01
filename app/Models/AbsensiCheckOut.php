@@ -14,4 +14,9 @@ class AbsensiCheckOut extends Model
         'tanggal_presensi',
         'jam_keluar',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

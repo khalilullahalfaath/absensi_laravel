@@ -43,5 +43,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->app->bind('AttendanceController', 'App\Http\Controllers\AttendanceController');
 
         $this->app->bind('UserController', 'App\Http\Controllers\UserController');
+
+        $this->app->bind('AdminController', 'App\Http\Controllers\AdminController');
     }
 }

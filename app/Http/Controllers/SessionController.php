@@ -19,7 +19,8 @@ class SessionController extends Controller
     {
         //validation email and password must be required
         $request->validate([
-            'email' => 'required',
+            // check if email exist in the database
+            'email' => 'required|email|exists:users,email',
             'password' => 'required'
         ], [
             'email.required' => 'Email harus diisi',

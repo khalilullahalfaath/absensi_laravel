@@ -64,3 +64,15 @@ Route::get('admin/users/{user}/edit', 'UserController@editUser')->name('admin.us
 Route::put('admin/users/{user}', 'UserController@updateUser')->name('admin.users.update')->middleware('auth');
 Route::get('/admin/users/delete/{user}', 'UserController@destroy')->name('admin.users.destroy')->middleware('auth');
 Route::get('/admin/users/print/records/csv', 'UserController@printAllUsersToCSV')->name('print.students.csv')->middleware('auth');
+
+
+// Admin Attendance
+// Route for the admin page
+Route::get('/admin/attendance', [AdminController::class, 'adminAttendance'])->name('admin.attendance')->middleware('auth');
+// Route for the search functionality
+Route::get('/admin/search', [AdminController::class, 'searchUsers'])->name('admin.search')->middleware('auth');
+
+// Route for the admin attendance page
+Route::get('admin/attendance/checkin/{id}', 'AdminController@destroyCheckIn')->name('admin.checkin.destroy')->middleware('auth');
+Route::get('admin/attendance/checkout/{id}', 'AdminController@destroyCheckOut')->name('admin.checkout.destroy')->middleware('auth');
+Route::get('admin/attendance/record/{id}', 'AdminController@destroyRecord')->name('admin.record.destroy')->middleware('auth');

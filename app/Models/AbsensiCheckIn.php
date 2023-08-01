@@ -14,4 +14,9 @@ class AbsensiCheckIn extends Model
         'tanggal_presensi',
         'jam_masuk',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

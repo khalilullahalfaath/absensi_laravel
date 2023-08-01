@@ -24,7 +24,7 @@
 
                 <!-- Data kehadiran link -->
                 <li class="nav-item">
-                    <a class="nav-link" href="/attendance/all-data">Data kehadiran</a>
+                    <a class="nav-link" href="/admin/attendance">Data kehadiran</a>
                 </li>
 
                 <!-- Logout link -->

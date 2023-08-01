@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AbsensiCheckIn;
+use App\Models\AbsensiCheckOut;
+use App\Models\Record;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -36,10 +39,24 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        $user = User::where('id', $id)
-            ->delete();
+        // Find the user record to delete
+        $user = User::findOrFail($id);
 
-        return redirect()->route('admin.users')->with('success', 'User record deleted successfully!');
+        // Delete the user's records
+        Record::where('user_id', $id)->delete();
+
+        // Delete the user's check-in records
+        AbsensiCheckIn::where('user_id', $id)->delete();
+
+        // Delete the user's check-out records
+        AbsensiCheckOut::where('user_id', $id)->delete();
+
+
+
+        // Delete the user
+        $user->delete();
+
+        return redirect()->route('admin.users')->with('success', 'User record and associated data deleted successfully!');
     }
 
 
