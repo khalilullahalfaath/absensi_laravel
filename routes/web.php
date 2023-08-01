@@ -50,6 +50,7 @@ Route::get('print/checkin/csv', 'AttendanceController@printAllCheckInToCSV')->na
 Route::get('print/checkout/csv', 'AttendanceController@printAllCheckoutToCSV')->name('print.allcheckout.csv')->middleware('auth');
 Route::get('print/records/csv', 'AttendanceController@printAllRecordToCSV')->name('print.allrecords.csv')->middleware('auth');
 
+
 // DASHBOARD
 
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard')->middleware('auth');
@@ -58,8 +59,8 @@ Route::get('/dashboard', 'DashboardController@index')->name('dashboard')->middle
 // ADMIN
 Route::get('/home/admin', [AdminController::class, 'index'])->name('home.admin')->middleware('auth');
 
-Route::get('admin/users/{user}/edit', 'UserController@editUser')->name('admin.users.edit');
-Route::put('admin/users/{user}', 'UserController@updateUser')->name('admin.users.update');
-Route::delete('admin/users/{user}', 'UserController@destroy')->name('admin.users.destroy');
-
 Route::get('/admin/users', [UserController::class, 'showAllData'])->name('admin.users')->middleware('auth');
+Route::get('admin/users/{user}/edit', 'UserController@editUser')->name('admin.users.edit')->middleware('auth');
+Route::put('admin/users/{user}', 'UserController@updateUser')->name('admin.users.update')->middleware('auth');
+Route::get('/admin/users/delete/{user}', 'UserController@destroy')->name('admin.users.destroy')->middleware('auth');
+Route::get('/admin/users/print/records/csv', 'UserController@printAllUsersToCSV')->name('print.students.csv')->middleware('auth');

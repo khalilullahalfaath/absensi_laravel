@@ -32,6 +32,7 @@ $(document).ready(function () {
     $(".edit-btn").on("click", function () {
         var userId = $(this).data("userid");
         var editUrl = "{{ route('admin.users.update', ':id') }}".replace(':id', userId);
+        console.log(editUrl);
         
         // Retrieve user record data from the row and populate the edit modal form fields
         var fields = ['nama', 'email', 'no_presensi', 'asal_instansi', 'nama_unit_kerja', 'jenis_kelamin', 'tanggal_lahir'];
@@ -65,6 +66,14 @@ $(document).ready(function () {
         // Clear form data when modal is closed
         $("#editUserForm")[0].reset();
     });
+
+
 });
+
+function confirmDelete(deleteUrl) {
+    if (confirm('Apakah Anda Yakin Menghapus Data?')) {
+        window.location.href = deleteUrl;
+    }
+}
 
 </script>

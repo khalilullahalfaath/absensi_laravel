@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
     public function updateUser(Request $request, $id)
     {
-        
+
         // Validate the form data as needed
         $validatedData = $request->validate([
             'nama' => 'required|string|max:255',
@@ -31,14 +34,15 @@ class UserController extends Controller
         return redirect()->route('admin.users')->with('success', 'User record updated successfully!');
     }
 
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        // Delete the user record
-        $user->delete();
+        $user = User::where('id', $id)
+            ->delete();
 
-        // Redirect back to the user list with a success message
-        return redirect()->route('admin.users')->with('success', 'User deleted successfully');
+        return redirect()->route('admin.users')->with('success', 'User record deleted successfully!');
     }
+
+
 
     public function showAllData()
     {
@@ -46,5 +50,24 @@ class UserController extends Controller
         // select *  from users where role = 'user'
         $userRecords = User::where('role', 'user')->get();
         return view('admin.pages.data_siswa', compact('userRecords'));
+    }
+
+    public function printAllUsersToCSV()
+    {
+        $users = User::where('role', 'user')->get();
+
+        $csvData = "Nama,Email,No. Presensi,Asal Instansi,Nama Unit Kerja,Jenis Kelamin,Tanggal Lahir\n";
+
+        foreach ($users as $user) {
+            $csvData .= "{$user->nama},{$user->email},{$user->no_presensi},{$user->asal_instansi},{$user->nama_unit_kerja},{$user->jenis_kelamin},{$user->tanggal_lahir}\n";
+        }
+
+        $headers = [
+            'Content-type'        => 'text/csv',
+            'Content-Disposition' => 'attachment; filename=Users_record.csv',
+        ];
+
+
+        return response($csvData, 200, $headers);
     }
 }

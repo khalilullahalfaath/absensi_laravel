@@ -30,11 +30,10 @@
                     <button class="btn btn-primary edit-btn" data-userid="{{ $userRecord->id }}">Edit</button>
             
                     <!-- Delete button -->
-                    <form action="{{ route('admin.users.destroy', $userRecord->id) }}" method="POST" style="display: inline-block">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
-                    </form>
+
+                    <button class="btn btn-danger delete-btn" onclick="confirmDelete('{{ route('admin.users.destroy', $userRecord) }}')">Delete</button>
+
+                    
                 </td>
             </tr>
             @endforeach
@@ -42,7 +41,8 @@
     </table>
 </div>
 <div class="mt-3 d-flex justify-content-center">
-    <a href="{{ route('print.allcheckin.csv') }}" class="btn btn-primary">Print All Check-in to CSV</a>
+    <a href="{{ route('print.students.csv', ['id' => 1]) }}" class="btn btn-primary">Download Student Records</a>
+
 </div>
 
 <!-- Edit User Modal -->
