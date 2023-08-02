@@ -21,7 +21,7 @@
                     <td>{{ $checkInRecord->jam_masuk }}</td>
                     <td>
                         <!-- Delete button -->
-                        <button class="btn btn-danger delete-btn" onclick="confirmDelete('{{ route('admin.checkin.destroy', $checkInRecord->id) }}')">Delete</button>
+                        <button class="btn btn-danger delete-btn" onclick="confirmDelete('{{ route('admin.attendance.checkin.destroy', $checkInRecord->id) }}')">Delete</button>
                     </td>
                 </tr>
             @endforeach
@@ -55,7 +55,7 @@
                     <td>{{ $checkOutRecord->jam_keluar }}</td>
                     <td>
                         <!-- Delete button -->
-                        <button class="btn btn-danger delete-btn" onclick="confirmDelete('{{ route('admin.checkout.destroy', $checkOutRecord->id) }}')">Delete</button>
+                        <button class="btn btn-danger delete-btn" onclick="confirmDelete('{{ route('admin.attendance.checkout.destroy', $checkOutRecord->id) }}')">Delete</button>
                     </td>
                 </tr>
             @endforeach
@@ -93,7 +93,7 @@
                     <td>{{ $record->jam_kerja }}</td>
                     <td>
                         <!-- Delete button -->
-                        <button class="btn btn-danger delete-btn" onclick="confirmDelete('{{ route('admin.record.destroy', $record->id) }}')">Delete</button>
+                        <button class="btn btn-danger delete-btn" onclick="confirmDelete('{{ route('admin.attendance.records.destroy', $record->id) }}')">Delete</button>
                     </td>
                 </tr>
             @endforeach

@@ -14,17 +14,17 @@
             <ul class="navbar-nav">
                 <!-- Home link -->
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="/home">Home</a>
+                    <a class="nav-link" aria-current="page" href="{{ route('home.user')}}">Home</a>
                 </li>
 
                 <!-- Isi Kehadiran link -->
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="/attendance">Isi Kehadiran</a>
+                    <a class="nav-link" aria-current="page" href="{{route('user.attendance')}}">Isi Kehadiran</a>
                 </li>
 
                 <!-- History link -->
                 <li class="nav-item">
-                    <a class="nav-link" href="/attendance/all-data">History</a>
+                    <a class="nav-link" href="{{route('user.attendance.allData')}}">History</a>
                 </li>
 
                 <!-- Logout link -->

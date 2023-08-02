@@ -23,48 +23,67 @@ Route::get('/', function () {
 
 Route::get('/home', function () {
     return view('home');
-})->middleware('auth');
+})->name('home.user')->middleware('auth');
 
+// group sessions endpoint
+Route::group(['prefix' => 'sessions'], function () {
+    Route::get('/', [SessionController::class, 'index'])->name('sessions');
+    Route::post('/login', [SessionController::class, 'login']);
+    Route::post('/logout', [SessionController::class, 'logout'])->middleware('auth');
+    Route::get('/register', [SessionController::class, 'register']);
+    Route::post('/create', [SessionController::class, 'create']);
+});
 
-Route::get('/sessions', [SessionController::class, 'index'])->name('sessions');;
-Route::post('/sessions/login', [SessionController::class, 'login']);
-Route::post('/sessions/logout', [SessionController::class, 'logout'])->middleware('auth');
-Route::get('/sessions/register', [SessionController::class, 'register']);
-Route::post('/sessions/create', [SessionController::class, 'create']);
+// group auth middleware
+Route::group(['middleware' => 'auth'], function () {
+    // group user endpoint
+    Route::group(['prefix' => 'user'], function () {
+        // group attendance endpoint
+        Route::group(['prefix' => 'attendance'], function () {
+            Route::get('/', [AttendanceController::class, 'attendance'])->name('user.attendance');
+            Route::post('/create', [AttendanceController::class, 'create'])->name('user.attendance.create');
+            Route::get('/all-data', [AttendanceController::class, 'showAllData'])->name('user.attendance.allData');
 
-Route::get('/attendance', [AttendanceController::class, 'attendance'])->middleware('auth');
-Route::post('/attendance/create', [AttendanceController::class, 'create'])->middleware('auth');
-Route::get('/attendance/all-data', [AttendanceController::class, 'showAllData'])->name('attendance.allData')->middleware('auth');
+            // export to csv only one data
+            Route::get('/print/checkin/csv/{id}', [AttendanceController::class, 'printCheckInToCSV'])->name('print.checkin.csv');
+            Route::get('/print/checkout/csv/{id}', [AttendanceController::class, 'printCheckOutToCSV'])->name('print.checkout.csv');
+            Route::get('/print/record/csv/{id}', [AttendanceController::class, 'printRecordToCSV'])->name('print.record.csv');
 
-Route::get('/print/checkin/csv/{id}', [AttendanceController::class, 'printCheckInToCSV'])->name('print.checkin.csv')->middleware('auth');
-Route::get('/print/checkout/csv/{id}', [AttendanceController::class, 'printCheckOutToCSV'])->name('print.checkout.csv')->middleware('auth');
-Route::get('/print/record/csv/{id}', [AttendanceController::class, 'printRecordToCSV'])->name('print.record.csv')->middleware('auth');
+            // export to csv all data
+            Route::get('print/checkin/csv', [AttendanceController::class, 'printAllCheckInToCSV'])->name('print.allcheckin.csv');
+            Route::get('print/checkout/csv', [AttendanceController::class, 'printAllCheckoutToCSV'])->name('print.allcheckout.csv');
+            Route::get('print/records/csv', [AttendanceController::class, 'printAllRecordToCSV'])->name('print.allrecords.csv');
+        });
+    });
 
-Route::get('print/checkin/csv', [AttendanceController::class, 'printAllCheckInToCSV'])->name('print.allcheckin.csv')->middleware('auth');
-Route::get('print/checkout/csv', [AttendanceController::class, 'printAllCheckoutToCSV'])->name('print.allcheckout.csv')->middleware('auth');
-Route::get('print/records/csv', [AttendanceController::class, 'printAllRecordToCSV'])->name('print.allrecords.csv')->middleware('auth');
+    // group admin endpoint
+    Route::group(['prefix' => 'admin'], function () {
+        Route::get('/', [AdminController::class, 'index'])->name('home.admin');
 
-// ADMIN
-Route::get('/home/admin', [AdminController::class, 'index'])->name('home.admin')->middleware('auth');
+        // group user endpoint
+        Route::group(['prefix' => 'users'], function () {
+            Route::get('/', [UserController::class, 'showAllData'])->name('admin.users');
+            Route::get('/{user}/edit', [UserController::class, 'editUser'])->name('admin.users.edit');
+            Route::put('/{user}', [UserController::class, 'updateUser'])->name('admin.users.update');
+            Route::get('/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 
-Route::get('/admin/users', [UserController::class, 'showAllData'])->name('admin.users')->middleware('auth');
-Route::get('admin/users/{user}/edit', [UserController::class, 'editUser'])->name('admin.users.edit')->middleware('auth');
-Route::put('admin/users/{user}', [UserController::class, 'updateUser'])->name('admin.users.update')->middleware('auth');
-Route::get('/admin/users/delete/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy')->middleware('auth');
-Route::get('/admin/users/print/records/csv', [UserController::class, 'printAllUsersToCSV'])->name('print.students.csv')->middleware('auth');
+            // export to csv all data
+            Route::get('/export', [UserController::class, 'printAllUsersToCSV'])->name('print.students.csv');
+        });
 
+        // group attendance endpoint
+        Route::group(['prefix' => 'attendance'], function () {
+            Route::get('/', [AdminController::class, 'adminAttendance'])->name('admin.attendance');
 
-// Admin Attendance
-// Route for the admin page
-Route::get('/admin/attendance', [AdminController::class, 'adminAttendance'])->name('admin.attendance')->middleware('auth');
-// Route for the search functionality
-Route::get('/admin/search', [AdminController::class, 'searchUsers'])->name('admin.search')->middleware('auth');
+            // export to csv all data
+            Route::get('/checkin/export', [AdminController::class, 'printAllCheckinRecordsToCSV'])->name('admin.print.allcheckin.csv');
+            Route::get('/checkout/export', [AdminController::class, 'printAllCheckoutRecordsToCSV'])->name('admin.print.allcheckout.csv');
+            Route::get('/records/export', [AdminController::class, 'printAllRecordsToCSV'])->name('admin.print.allrecords.csv');
 
-// Route for the admin attendance page
-Route::get('admin/attendance/checkin/export', [AdminController::class, 'printAllCheckinRecordsToCSV'])->name('admin.print.allcheckin.csv')->middleware('auth');
-Route::get('admin/attendance/checkout/export', [AdminController::class, 'printAllCheckoutRecordsToCSV'])->name('admin.print.allcheckout.csv')->middleware('auth');
-Route::get('admin/attendance/record/export', [AdminController::class, 'printAllRecordsToCSV'])->name('admin.print.allrecords.csv')->middleware('auth');
-
-Route::get('admin/attendance/checkin/{id}', [AdminController::class, 'destroyCheckIn'])->name('admin.checkin.destroy')->middleware('auth');
-Route::get('admin/attendance/checkout/{id}', [AdminController::class, 'destroyCheckOut'])->name('admin.checkout.destroy')->middleware('auth');
-Route::get('admin/attendance/record/{id}', [AdminController::class, 'destroyRecord'])->name('admin.record.destroy')->middleware('auth');
+            // destroy data
+            Route::get('/checkin/{id}', [AdminController::class, 'destroyCheckin'])->name('admin.attendance.checkin.destroy');
+            Route::get('/checkout/{id}', [AdminController::class, 'destroyCheckout'])->name('admin.attendance.checkout.destroy');
+            Route::get('/records/{id}', [AdminController::class, 'destroyRecord'])->name('admin.attendance.records.destroy');
+        });
+    });
+});

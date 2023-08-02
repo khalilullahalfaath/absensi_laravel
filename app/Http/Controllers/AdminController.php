@@ -51,19 +51,43 @@ class AdminController extends Controller
         // Check if there are associated records in the "records" table
         $associatedRecords = Record::where('absensi_check_in_id', $id)->get();
 
-        if ($associatedRecords->isNotEmpty()) {
-            // If there are associated records, delete them first
-            foreach ($associatedRecords as $record) {
-                $record->delete();
+        // Get unique absensi_check_out_id values from associated records
+        $checkOutIds = $associatedRecords->pluck('absensi_check_out_id')->unique();
+
+        // dd($checkOutIds);
+
+        // Loop through the unique absensi_check_out_id values and delete associated records and Check-out records
+        foreach ($checkOutIds as $checkOutId) {
+            // Get the Check-out record by its ID
+            $checkOutRecord = AbsensiCheckOut::find($checkOutId);
+
+            // Check if the Check-out record exists and delete it
+            if ($checkOutRecord) {
+                // Check if there are associated records in the "records" table for the Check-out record
+                $associatedCheckOutRecords = Record::where('absensi_check_out_id', $checkOutId)->get();
+
+                // Delete associated records for the Check-out record
+                foreach ($associatedCheckOutRecords as $record) {
+                    $record->delete();
+                }
+
+                // Now, you can delete the Check-out record
+                $checkOutRecord->delete();
             }
+        }
+
+        // Delete associated records in the "records" table
+        foreach ($associatedRecords as $record) {
+            $record->delete();
         }
 
         // Now, you can delete the Check-in record
         $checkInRecord->delete();
 
         // Redirect back to the main view with a success message
-        return redirect('admin/attendance')->with('success', 'Check-in record deleted successfully.');
+        return redirect('admin/attendance')->with('success', 'Check-in record and associated records deleted successfully.');
     }
+
 
     public function destroyCheckOut($id)
     {
@@ -89,6 +113,14 @@ class AdminController extends Controller
 
     public function destroyRecord($id)
     {
+        // destroy checkin record
+        $checkInRecord = AbsensiCheckIn::findOrFail($id);
+        $checkInRecord->delete();
+
+        // destroy checkout record
+        $checkOutRecord = AbsensiCheckOut::findOrFail($id);
+        $checkOutRecord->delete();
+
         // Find the record by its ID
         $record = Record::findOrFail($id);
 

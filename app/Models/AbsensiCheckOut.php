@@ -19,4 +19,14 @@ class AbsensiCheckOut extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function records()
+    {
+        return $this->hasMany(Record::class, 'absensi_check_out_id', 'id');
+    }
+
+    public function checkIn()
+    {
+        return $this->belongsTo(AbsensiCheckIn::class, 'tanggal_presensi', 'tanggal');
+    }
 }

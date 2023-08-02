@@ -9,7 +9,7 @@
                     <h4 class="text-center">Attendance Form</h4>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="/attendance/create">
+                    <form method="POST" action="{{route('user.attendance.create')}}">
                         @csrf
                         <div class="form-group">
                             <label for="date">Date</label>
