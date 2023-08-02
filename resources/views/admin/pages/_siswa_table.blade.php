@@ -45,7 +45,6 @@
 </div>
 <div class="mt-3 d-flex justify-content-center">
     <a href="{{ route('print.students.csv', ['id' => 1]) }}" class="btn btn-primary">Download Student Records</a>
-
 </div>
 
 <!-- Edit User Modal -->

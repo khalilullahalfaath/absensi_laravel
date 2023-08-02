@@ -37,7 +37,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/web.php'));
         });
 
-        // Bind the SessionController to the App\Http\Controllers\SessionController class.
+        // binding
         $this->app->bind('SessionController', 'App\Http\Controllers\SessionController');
 
         $this->app->bind('AttendanceController', 'App\Http\Controllers\AttendanceController');

@@ -98,4 +98,58 @@ class AdminController extends Controller
         // Redirect back to the main view with a success message
         return redirect('admin/attendance')->with('success', 'Record deleted successfully.');
     }
+
+    public function printAllCheckinRecordsToCSV()
+    {
+        $checkInRecords = AbsensiCheckIn::all();
+
+        $csvData = "No, Id_user, tanggal_presensi, jam_masuk\n";
+
+        foreach ($checkInRecords as $key => $checkInRecord) {
+            $csvData .= $key + 1 . ", " . $checkInRecord->user_id . ", " . $checkInRecord->tanggal_presensi . ", " . $checkInRecord->jam_masuk . "\n";
+        }
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="checkin_records.csv"',
+        ];
+
+        return response($csvData, 200, $headers);
+    }
+
+    public function printAllCheckoutRecordsToCSV()
+    {
+        $checkOutRecords = AbsensiCheckOut::all();
+
+        $csvData = "No, Id_user, tanggal_presensi, jam_keluar\n";
+
+        foreach ($checkOutRecords as $key => $checkOutRecord) {
+            $csvData .= $key + 1 . ", " . $checkOutRecord->user_id . ", " . $checkOutRecord->tanggal_presensi . ", " . $checkOutRecord->jam_keluar . "\n";
+        }
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="checkout_records.csv"',
+        ];
+
+        return response($csvData, 200, $headers);
+    }
+
+    public function printAllRecordsToCSV()
+    {
+        $records = Record::all();
+
+        $csvData = "No, Id_user, tanggal_presensi, jam_masuk, jam_keluar, jam_kerja\n";
+
+        foreach ($records as $key => $record) {
+            $csvData .= $key + 1 . ", " . $record->user_id . ", " . $record->tanggal_presensi . ", " . $record->jam_masuk . ", " . $record->jam_keluar . "," . $record->jam_kerja . "\n";
+        }
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="records.csv"',
+        ];
+
+        return response($csvData, 200, $headers);
+    }
 }

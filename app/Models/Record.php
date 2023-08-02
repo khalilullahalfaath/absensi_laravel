@@ -19,11 +19,16 @@ class Record extends Model
 
     public function absensiCheckIn()
     {
-        return $this->belongsTo('App\Models\AbsensiCheckIn', 'absensi_check_in_id');
+        return $this->belongsTo(AbsensiCheckIn::class, 'absensi_check_in_id');
     }
 
     public function absensiCheckOut()
     {
-        return $this->belongsTo('App\Models\AbsensiCheckOut', 'absensi_check_out_id');
+        return $this->belongsTo(AbsensiCheckOut::class, 'absensi_check_out_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

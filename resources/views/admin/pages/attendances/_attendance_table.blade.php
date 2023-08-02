@@ -21,12 +21,15 @@
                     <td>{{ $checkInRecord->jam_masuk }}</td>
                     <td>
                         <!-- Delete button -->
-                        <button class="btn btn-danger delete-btn" onclick="confirmDelete('{{ route('admin.checkin.destroy', $checkInRecord->id) }}')">Delete</button>
+                        <button class="btn btn-danger delete-btn" onclick="confirmDelete('{{ route('admin.print.allcheckin.csv', $checkInRecord->id) }}')">Delete</button>
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
+</div>
+<div class="mt-3 d-flex justify-content-center">
+    <a href="{{ route('admin.print.allcheckin.csv')}}" class="btn btn-primary">Download Check-in Records</a>
 </div>
 
 <!-- Check-out table -->
@@ -58,6 +61,9 @@
             @endforeach
         </tbody>
     </table>
+</div>
+<div class="mt-3 d-flex justify-content-center">
+    <a href="{{ route('admin.print.allcheckout.csv')}}" class="btn btn-primary">Download Check-out Records</a>
 </div>
 
 <!-- Records table -->
@@ -93,4 +99,7 @@
             @endforeach
         </tbody>
     </table>
+</div>
+<div class="mt-3 mb-3 d-flex justify-content-center">
+    <a href="{{ route('admin.print.allrecords.csv')}}" class="btn btn-primary">Download Record time Records</a>
 </div>
