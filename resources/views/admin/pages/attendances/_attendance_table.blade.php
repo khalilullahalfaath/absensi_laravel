@@ -21,7 +21,7 @@
                     <td>{{ $checkInRecord->jam_masuk }}</td>
                     <td>
                         <!-- Delete button -->
-                        <button class="btn btn-danger delete-btn" onclick="confirmDelete('{{ route('admin.print.allcheckin.csv', $checkInRecord->id) }}')">Delete</button>
+                        <button class="btn btn-danger delete-btn" onclick="confirmDelete('{{ route('admin.checkin.destroy', $checkInRecord->id) }}')">Delete</button>
                     </td>
                 </tr>
             @endforeach
