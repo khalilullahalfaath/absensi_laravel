@@ -24,6 +24,7 @@ class SessionController extends Controller
             'password' => 'required'
         ], [
             'email.required' => 'Email harus diisi',
+            'email.exists' => 'Email tidak ditemukan',
             'password.required' => 'Password harus diisi'
         ]);
 
@@ -33,16 +34,20 @@ class SessionController extends Controller
         ];
 
 
-        if (Auth::attempt($infologin)) {
-            // if login is successful, redirect to the appropriate page based on the user's role
-            if (Auth::user()->role === 'admin') {
-                return redirect('/home/admin')->with('success', 'Admin login successful');
+        if (Auth::guard('web_no_soft_deleted')->attempt($infologin)) {
+            if (Auth::attempt($infologin)) {
+                // if login is successful, redirect to the appropriate page based on the user's role
+                if (Auth::user()->role === 'admin') {
+                    return redirect('/home/admin')->with('success', 'Admin login successful');
+                } else {
+                    return redirect('/home')->with('success', Auth::user()->nama . ' login successful');
+                }
+                exit();
             } else {
-                return redirect('/home')->with('success', Auth::user()->nama . ' login successful');
+                return redirect('/sessions')->withErrors('Email or password is incorrect');
             }
-            exit();
         } else {
-            return redirect('/sessions')->withErrors('Email or password is incorrect');
+            return redirect('/sessions')->with('error', 'Login gagal. Email sudah didaftarkan sebelumnya. Silahkan gunakan email yang berbeda. Jika anda lupa password, silahkan hubungi admin');
         }
     }
 

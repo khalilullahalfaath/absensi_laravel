@@ -39,6 +39,13 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
+            'provider' => 'users_no_soft_deleted', // add a custom provider for excluding soft-deleted users
+        ],
+
+        // add a custom guard for excluding soft-deleted users
+        'web_no_soft_deleted' => [
+            'driver' => 'session',
+            'provider' => 'users_no_soft_deleted',
         ],
     ],
 
@@ -69,6 +76,15 @@ return [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+
+        // add a custom provider for excluding soft-deleted users
+        'users_no_soft_deleted' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+            'query' => function ($model) {
+                return $model->whereNull('deleted_at');
+            },
+        ],
     ],
 
     /*
