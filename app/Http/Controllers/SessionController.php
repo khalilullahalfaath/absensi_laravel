@@ -20,10 +20,12 @@ class SessionController extends Controller
         //validation email and password must be required
         $request->validate([
             // check if email exist in the database
-            'email' => 'required|email|exists:users,email',
+            //check if email not soft deleted
+            'email' => 'required|email|exists:users,email|exists_not_soft_deleted',
             'password' => 'required'
         ], [
             'email.required' => 'Email harus diisi',
+            'email.exists_not_soft_deleted' => 'Email telah dihapus oleh sistem. Silahkan hubungi admin untuk mengaktifkan akun anda',
             'email.exists' => 'Email tidak ditemukan',
             'password.required' => 'Password harus diisi'
         ]);
@@ -33,21 +35,16 @@ class SessionController extends Controller
             'password' => $request->password
         ];
 
-
-        if (Auth::guard('web_no_soft_deleted')->attempt($infologin)) {
-            if (Auth::attempt($infologin)) {
-                // if login is successful, redirect to the appropriate page based on the user's role
-                if (Auth::user()->role === 'admin') {
-                    return redirect('/home/admin')->with('success', 'Admin login successful');
-                } else {
-                    return redirect('/home')->with('success', Auth::user()->nama . ' login successful');
-                }
-                exit();
+        if (Auth::attempt($infologin)) {
+            // if login is successful, redirect to the appropriate page based on the user's role
+            if (Auth::user()->role === 'admin') {
+                return redirect(route('home.admin'))->with('success', 'Admin login successful');
             } else {
-                return redirect('/sessions')->withErrors('Email or password is incorrect');
+                return redirect(route('home.user'))->with('success', Auth::user()->nama . ' login successful');
             }
+            exit();
         } else {
-            return redirect('/sessions')->with('error', 'Login gagal. Email sudah didaftarkan sebelumnya. Silahkan gunakan email yang berbeda. Jika anda lupa password, silahkan hubungi admin');
+            return redirect('/sessions')->withErrors('Email or password is incorrect');
         }
     }
 

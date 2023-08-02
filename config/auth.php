@@ -39,7 +39,6 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
-            'provider' => 'users_no_soft_deleted', // add a custom provider for excluding soft-deleted users
         ],
 
         // add a custom guard for excluding soft-deleted users
