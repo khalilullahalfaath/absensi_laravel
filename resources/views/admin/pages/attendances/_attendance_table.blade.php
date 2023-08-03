@@ -6,6 +6,7 @@
             <tr>
                 <th>No</th>
                 <th>Id User</th>
+                <th>Nama Peserta</th>
                 <th>Tanggal Presensi</th>
                 <th>Jam Masuk</th>
                 <th>Actions</th> 
@@ -17,6 +18,7 @@
                     <td>{{ $loop->iteration }}</td>
                     {{-- show some data relevant to checkin such as id_user which is a foreign key to users table --}}
                     <td>{{ optional($checkInRecord->user)->id ?? 'N/A' }}</td>
+                    <td>{{ optional($checkInRecord->user)->nama ?? 'N/A' }}</td>
                     <td>{{ $checkInRecord->tanggal_presensi }}</td>
                     <td>{{ $checkInRecord->jam_masuk }}</td>
                     <td>
@@ -40,6 +42,7 @@
             <tr>
                 <th>No</th>
                 <th>Id User</th>
+                <th>Nama Peserta</th>
                 <th>Tanggal Presensi</th>
                 <th>Jam Keluar</th>
                 <th>Actions</th> 
@@ -51,6 +54,7 @@
                     <td>{{ $loop->iteration }}</td>
                     {{-- show some data relevant to checkout such as id_user which is a foreign key to users table --}}
                     <td>{{ optional($checkOutRecord->user)->id ?? 'N/A' }}</td>
+                    <td>{{ optional($checkOutRecord->user)->nama ?? 'N/A' }}</td>
                     <td>{{ $checkOutRecord->tanggal_presensi }}</td>
                     <td>{{ $checkOutRecord->jam_keluar }}</td>
                     <td>
@@ -74,6 +78,7 @@
             <tr>
                 <th>No</th>
                 <th>Id User</th>
+                <th>Nama Peserta</th>
                 <th>Tanggal Presensi</th>
                 <th>Jam Masuk</th>
                 <th>Jam Keluar</th>
@@ -87,6 +92,7 @@
                     <td>{{ $loop->iteration }}</td>
                     {{-- show some data relevant to record such as id_user which is a foreign key to users table --}}
                     <td>{{ optional($record->user)->id ?? 'N/A' }}</td>
+                    <td>{{ optional($record->user)->nama ?? 'N/A' }}</td>
                     <td>{{ $record->absensiCheckIn->tanggal_presensi }}</td>
                     <td>{{ $record->absensiCheckIn->jam_masuk }}</td>
                     <td>{{ $record->absensiCheckOut->jam_keluar }}</td>
