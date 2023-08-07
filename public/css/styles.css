@@ -7,3 +7,23 @@
     color: red;
     margin-right: 2px;
 }
+
+/* Define styles for legend circles */
+.legend-circle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.legend-red {
+    background-color: red; 
+}
+
+.legend-yellow {
+    background-color: yellow; 
+}
+
+.legend-green {
+    background-color: green; 
+}

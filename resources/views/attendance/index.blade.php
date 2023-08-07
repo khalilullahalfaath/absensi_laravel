@@ -9,16 +9,17 @@
                     <h4 class="text-center">Attendance Form</h4>
                 </div>
                 <div class="card-body">
+                    <p>Pembukaan check-in hanya pada jam 07:00-09:00</p>
                     <form method="POST" action="{{route('user.attendance.create')}}">
                         @csrf
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="date">Date</label>
                             <input type="date" name="date" id="date" class="form-control" required>
                         </div>
                         <div class="form-group mt-3">
                             <label for="time">Time</label>
                             <input type="time" name="time" id="time" class="form-control" required>
-                        </div>
+                        </div> --}}
                         <div class="form-group mt-3">
                             <label for="attendance_type">Attendance Type</label>
                             <div class="form-check">

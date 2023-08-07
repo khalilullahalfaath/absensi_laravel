@@ -13,6 +13,7 @@ class AbsensiCheckIn extends Model
         'user_id',
         'tanggal_presensi',
         'jam_masuk',
+        'status',
     ];
 
     public function user()
