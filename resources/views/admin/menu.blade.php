@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <!-- Brand logo or name -->
-        <a class="navbar-brand" href="/home/admin">Dashboard Aplikasi Presensi Magang LEN</a>
+        <p>Dashboard Aplikasi Presensi Magang LEN</p>
 
         <!-- Navbar toggler button for small screens -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
