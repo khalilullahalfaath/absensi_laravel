@@ -276,8 +276,8 @@ class AttendanceController extends Controller
     public function printCheckInToCSV($id)
     {
         $checkInRecord = AbsensiCheckIn::findOrFail($id);
-        $csvContent = "Tanggal Presensi,Jam Masuk\n";
-        $csvContent .= "{$checkInRecord->tanggal_presensi},{$checkInRecord->jam_masuk}\n";
+        $csvContent = "Tanggal Presensi,Jam Masuk, Status\n";
+        $csvContent .= "{$checkInRecord->tanggal_presensi},{$checkInRecord->jam_masuk},{$checkInRecord->status}\n";
 
         $headers = [
             'Content-type'        => 'text/csv',
@@ -305,8 +305,8 @@ class AttendanceController extends Controller
     public function printRecordToCSV($id)
     {
         $record = Record::findOrFail($id);
-        $csvContent = "Tanggal Presensi,Jam Masuk,Jam Keluar,Jam Kerja\n";
-        $csvContent .= "{$record->absensiCheckIn->tanggal_presensi},{$record->absensiCheckIn->jam_masuk},{$record->absensiCheckOut->jam_keluar},{$record->jam_kerja}\n";
+        $csvContent = "Tanggal Presensi,Jam Masuk,Jam Keluar,Jam Kerja, Status Chec-in\n";
+        $csvContent .= "{$record->absensiCheckIn->tanggal_presensi},{$record->absensiCheckIn->jam_masuk},{$record->absensiCheckOut->jam_keluar},{$record->jam_kerja},{$record->absensiCheckIn->status}\n";
 
         $headers = [
             'Content-type'        => 'text/csv',
