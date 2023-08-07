@@ -135,10 +135,10 @@ class AdminController extends Controller
     {
         $checkInRecords = AbsensiCheckIn::all();
 
-        $csvData = "No, Id_user, tanggal_presensi, jam_masuk\n";
+        $csvData = "No, Id_user, nama_peserta, tanggal_presensi, jam_masuk, status\n";
 
         foreach ($checkInRecords as $key => $checkInRecord) {
-            $csvData .= $key + 1 . ", " . $checkInRecord->user_id . ", " . $checkInRecord->tanggal_presensi . ", " . $checkInRecord->jam_masuk . "\n";
+            $csvData .= $key + 1 . ", " . $checkInRecord->user_id . ", " . $checkInRecord->nama . ", " . $checkInRecord->tanggal_presensi . ", " . $checkInRecord->jam_masuk .  $checkInRecord->status . "\n";
         }
 
         $headers = [
@@ -171,10 +171,10 @@ class AdminController extends Controller
     {
         $records = Record::all();
 
-        $csvData = "No, Id_user, tanggal_presensi, jam_masuk, jam_keluar, jam_kerja\n";
+        $csvData = "No, Id_user, nama_peserta, tanggal_presensi, jam_masuk, jam_keluar, jam_kerja, status_check_in\n";
 
         foreach ($records as $key => $record) {
-            $csvData .= $key + 1 . ", " . $record->user_id . ", " . $record->tanggal_presensi . ", " . $record->jam_masuk . ", " . $record->jam_keluar . "," . $record->jam_kerja . "\n";
+            $csvData .= $key + 1 . ", " . $record->user_id . ", " . $record->user->nama . ", " . $record->absensiCheckIn->tanggal_presensi . ", "  . $record->absensiCheckIn->jam_masuk . ", " . $record->absensiCheckout->jam_keluar . "," . $record->jam_kerja  . $record->absensiCheckIn->status . "\n";
         }
 
         $headers = [
