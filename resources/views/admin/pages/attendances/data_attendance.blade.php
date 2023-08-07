@@ -12,7 +12,24 @@
         </ul>
     </div>
     @endif
+
 <div class="container mt-5">
+    <!-- Legend -->
+<div class="mt-4 mb-5">
+    <h4>Keterangan</h4>
+    <div class="d-flex align-items-center mt-2">
+        <div class="legend-circle legend-green"></div>
+        <span class="ml-2">OK</span>
+    </div>
+    <div class="d-flex align-items-center">
+        <div class="legend-circle legend-red"></div>
+        <span class="ml-2">Late</span>
+    </div>
+    <div class="d-flex align-items-center mt-2">
+        <div class="legend-circle legend-yellow"></div>
+        <span class="ml-2">Not Check-in. Created by System</span>
+    </div>
+</div>
     <!-- Display Check-in Records -->
     <h4>Attendance Record</h4>
     @include('admin.pages.attendances._attendance_table')
