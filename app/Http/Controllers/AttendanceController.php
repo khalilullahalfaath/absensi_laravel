@@ -80,12 +80,20 @@ class AttendanceController extends Controller
     // TODO: check if the time right now is in the future
 
 
-    // Set the date portion of the $sixAM DateTime object to be the same as the input date
-    $sixAM = \DateTime::createFromFormat('Y-m-d H:i', "{$inputDate} 06:00");
+    // Set the date portion of the $sevenAM DateTime object to be the same as the input date
+    $sevenAM = \DateTime::createFromFormat('Y-m-d H:i', "{$inputDate} 07:00");
 
-    // Check if the input time is before 6 AM
-    if ($inputDateTime < $sixAM) {
-        return ['success' => false, 'message' => 'You can only check in after 6 AM.'];
+    // Check if the input time is before 7 AM
+    if ($inputDateTime < $sevenAM) {
+        return ['success' => false, 'message' => 'You can only check in after 7 AM.'];
+    }
+
+    // Set the date portion of the $nineAM DateTime object to be the same as the input date
+    $nineAM = \DateTime::createFromFormat('Y-m-d H:i', "{$inputDate} 09:00");
+
+    // Check if the input time is before 9 AM
+    if ($inputDateTime > $nineAM) {
+        return ['success' => false, 'message' => 'You can only check in before 9 AM.'];
     }
 
     // Store check-in data
