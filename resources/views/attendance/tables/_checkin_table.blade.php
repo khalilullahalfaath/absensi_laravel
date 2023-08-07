@@ -4,14 +4,17 @@
             <tr>
                 <th>Tanggal Presensi</th>
                 <th>Jam Masuk</th>
+                <th>Status</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($checkInRecords as $checkInRecord)
-            <tr>
+            <tr class="{{ $checkInRecord->status === 'late' ? 'table-danger' : ($checkInRecord->status === 'not check-in' ? 'table-warning' : ($checkInRecord->status === 'ok' ? 'table-success' : '')) }}">
+
                 <td>{{ $checkInRecord->tanggal_presensi }}</td>
                 <td>{{ $checkInRecord->jam_masuk }}</td>
+                <td>{{ $checkInRecord->status }}</td>
                 <td class="text-center">
                     <a href="{{ route('print.checkin.csv', ['id' => $checkInRecord->id]) }}" class="btn btn-sm btn-primary">Print to CSV</a>
                 </td>
