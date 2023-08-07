@@ -56,11 +56,9 @@ class AttendanceController extends Controller
         // Get the current date and time
         $currentDateTime = now();
 
-        // dd($currentDateTime);
-
-        // Parse the input date and time from the request
-        $inputDate = $request->date;
-        $inputTime = $request->time;
+        // Parse the input date and time from the current date and time
+        $inputDate = $currentDateTime->format('Y-m-d');
+        $inputTime = $currentDateTime->format('H:i');
 
         // Combine the input date and time and create a DateTime object
         $inputDateTime = \DateTime::createFromFormat('Y-m-d H:i', "{$inputDate} {$inputTime}");
@@ -111,6 +109,16 @@ class AttendanceController extends Controller
             $status = 'late';
         }
 
+        // find if already checkin
+        $checkInRecord = AbsensiCheckIn::where('user_id', Auth::id())
+            ->where('tanggal_presensi', $inputDate)
+            ->first();
+
+        // if checkin record is exist then return error
+        if ($checkInRecord) {
+            return ['success' => false, 'message' => 'You have already checked in for today.'];
+        }
+
         // Store check-in data
         $checkInData = [
             'tanggal_presensi' => $currentDateTime->format('Y-m-d'),
@@ -126,17 +134,36 @@ class AttendanceController extends Controller
 
     public function checkOut(Request $request)
     {
+        // Get the current date and time
+        $currentDateTime = now();
+
+        // Parse the input date and time from the current date and time
+        $inputDate = $currentDateTime->format('Y-m-d');
+        $inputTime = $currentDateTime->format('H:i');
+
         // Find the corresponding check-in record for the given date and user
         $checkInRecord = AbsensiCheckIn::where('user_id', Auth::id())
-            ->where('tanggal_presensi', $request->date)
+            ->where('tanggal_presensi', $inputDate)
             ->first();
 
+        // dd($checkInRecord);
+
+        // find chekout record
+        $checkOutRecord = AbsensiCheckOut::where('user_id', Auth::id())
+            ->where('tanggal_presensi', $inputDate)
+            ->first();
+
+        // if checkout record is exist then return error
+        if ($checkOutRecord !== null) {
+            return ['success' => false, 'message' => 'You have already checked out for today.'];
+        }
+
         // Check if a check-in record was found
-        if ($checkInRecord) {
+        if ($checkInRecord !== null) {
             // Store check-out data
             $checkOutData = [
-                'tanggal_presensi' => $request->date,
-                'jam_keluar' => $request->time,
+                'tanggal_presensi' => $inputDate,
+                'jam_keluar' => $inputTime,
                 'user_id' => Auth::id(),
             ];
 
@@ -162,6 +189,55 @@ class AttendanceController extends Controller
         } else {
             // If no corresponding check-in found, redirect back with an error message
             // dd("HALO MASUK DI SINI");
+
+            // if it's already above 9 AM then the check-in is status is set to 'not check-in' and the check-in is set to 12 AM
+            $nineAM = \DateTime::createFromFormat('Y-m-d H:i', "{$inputDate} 09:00");
+
+            $onePM = \DateTime::createFromFormat('Y-m-d H:i', "{$inputDate} 13:00");
+
+            if ($currentDateTime > $nineAM) {
+                $checkInData = [
+                    'tanggal_presensi' => $currentDateTime->format('Y-m-d'),
+                    'jam_masuk' => $onePM->format('H:i'),
+                    'user_id' => Auth::id(),
+                    'status' => 'not check-in',
+                ];
+
+                // create check-in record then get the id
+                AbsensiCheckIn::create($checkInData);
+
+                // get the AbsensiCheckIn id
+                $checkInRecord = AbsensiCheckIn::where('user_id', Auth::id())
+                    ->where('tanggal_presensi', $inputDate)
+                    ->first();
+
+                // Store check-out data
+                $checkOutData = [
+                    'tanggal_presensi' => $inputDate,
+                    'jam_keluar' => $inputTime,
+                    'user_id' => Auth::id(),
+                ];
+
+                $checkOutRecord = AbsensiCheckOut::create($checkOutData);
+
+                $checkintime = $checkInData['jam_masuk'];
+                $checkouttime = $checkOutRecord->jam_keluar;
+
+                // Calculate work hours and store in records table
+                $workHours = $this->calculateWorkHours($checkintime, $checkouttime);
+
+                $recordData = [
+                    'user_id'  => Auth::id(),
+                    'absensi_check_in_id' => $checkInRecord->id,
+                    'absensi_check_out_id' => $checkOutRecord->id,
+                    'jam_kerja' => $workHours,
+                ];
+
+                Record::create($recordData);
+
+                return ['success' => true, 'message' => 'Check-out successful'];
+            }
+
             return ['success' => false, 'message' => 'Check-out unsuccessful. Please check if you have checkin for today.'];
         }
     }
