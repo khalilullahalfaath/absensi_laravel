@@ -9,7 +9,6 @@
                 <th>Nama Peserta</th>
                 <th>Tanggal Presensi</th>
                 <th>Jam Masuk</th>
-                <th>Jam Server</th>
                 <th>Actions</th> 
             </tr>
         </thead>
