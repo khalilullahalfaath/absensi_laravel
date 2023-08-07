@@ -9,18 +9,20 @@
                 <th>Nama Peserta</th>
                 <th>Tanggal Presensi</th>
                 <th>Jam Masuk</th>
+                <th>Status</th>
                 <th>Actions</th> 
             </tr>
         </thead>
         <tbody>
             @foreach ($checkInRecords as $checkInRecord)
-                <tr>
+            <tr class="{{ $checkInRecord->status === 'late' ? 'table-danger' : ($checkInRecord->status === 'not check-in' ? 'table-warning' : ($checkInRecord->status === 'ok' ? 'table-success' : '')) }}">
                     <td>{{ $loop->iteration }}</td>
                     {{-- show some data relevant to checkin such as id_user which is a foreign key to users table --}}
                     <td>{{ optional($checkInRecord->user)->id ?? 'N/A' }}</td>
                     <td>{{ optional($checkInRecord->user)->nama ?? 'N/A' }}</td>
                     <td>{{ $checkInRecord->tanggal_presensi }}</td>
                     <td>{{ $checkInRecord->jam_masuk }}</td>
+                    <td>{{$checkInRecord->status}}</td>
                     <td>
                         <!-- Delete button -->
                         <button class="btn btn-danger delete-btn" onclick="confirmDelete('{{ route('admin.attendance.checkin.destroy', $checkInRecord->id) }}')">Delete</button>
@@ -83,12 +85,13 @@
                 <th>Jam Masuk</th>
                 <th>Jam Keluar</th>
                 <th>Jam Kerja</th>
+                <th>Status Check-in</th>
                 <th>Actions</th> 
             </tr>
         </thead>
         <tbody>
             @foreach ($records as $record)
-                <tr>
+            <tr class="{{ $record->absensiCheckIn->status === 'late' ? 'table-danger' : ($record->absensiCheckIn->status === 'not check-in' ? 'table-warning' : ($record->absensiCheckIn->status === 'ok' ? 'table-success' : '')) }}">
                     <td>{{ $loop->iteration }}</td>
                     {{-- show some data relevant to record such as id_user which is a foreign key to users table --}}
                     <td>{{ optional($record->user)->id ?? 'N/A' }}</td>
@@ -97,6 +100,7 @@
                     <td>{{ $record->absensiCheckIn->jam_masuk }}</td>
                     <td>{{ $record->absensiCheckOut->jam_keluar }}</td>
                     <td>{{ $record->jam_kerja }}</td>
+                    <td>{{$record->absensiCheckIn->status}}</td>
                     <td>
                         <!-- Delete button -->
                         <button class="btn btn-danger delete-btn" onclick="confirmDelete('{{ route('admin.attendance.records.destroy', $record->id) }}')">Delete</button>
