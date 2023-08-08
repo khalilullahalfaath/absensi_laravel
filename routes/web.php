@@ -30,7 +30,15 @@ Route::group(['prefix' => 'sessions'], function () {
     Route::post('/create', [SessionController::class, 'create']);
 
     // group verify endpoint
-    Route::get('/home', [SessionController::class, 'home'])->middleware(['auth', 'verify_email'])->name('home.user');
+    Route::get('/home', function () {
+        return view('home');
+    })->middleware(['auth', 'verify_email'])->name('home.user');
+
+    // resend verify
+    Route::get('/verify/resend', [SessionController::class, 'reverifyEmail'])->name('user.reverifyEmail');
+    Route::post('/verify/resend/post', [SessionController::class, 'resendVerifyEmail'])->name('user.verify.resend');
+
+    // verify
     Route::get('/verify/{token}', [SessionController::class, 'verifyAccount'])->name('user.verify');
 });
 
@@ -39,7 +47,7 @@ Route::group(['prefix' => 'sessions'], function () {
 // group auth middleware
 Route::group(['middleware' => 'auth'], function () {
     // group user endpoint
-    Route::group(['prefix' => 'user'], function () {
+    Route::group(['prefix' => 'user', 'middleware' => 'verify_email'], function () {
         // group attendance endpoint
         Route::group(['prefix' => 'attendance'], function () {
             Route::get('/', [AttendanceController::class, 'attendance'])->name('user.attendance');

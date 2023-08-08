@@ -127,13 +127,36 @@ class SessionController extends Controller
             });
 
             // If the user is created successfully, you can redirect or do something else
-            return redirect('/sessions')->with('success', 'Registration successful. You can now log in.');
+            return redirect('/sessions')->with('success', 'Registration successful. Please check your email for verification.');
         } catch (\Exception $e) {
             // If there's an error during the user creation, catch the exception
             // and handle the error accordingly (e.g., log the error, show an error message, etc.)
             // For debugging purposes, you can also use dd($e) to inspect the exception
             dd($e);
         }
+    }
+
+    public function reverifyEmail()
+    {
+        return view('sessions.resendVerification');
+    }
+
+    public function resendVerifyEmail(request $request)
+    {
+        $token = Str::random(60);
+
+        UserVerify::create([
+            'user_id' => User::where('email', $request->email)->first()->id,
+            'token' => $token
+        ]);
+
+        // Send verification email to the user
+        Mail::send('email.emailVerificationEmail', ['token' => $token], function ($message) use ($request) {
+            $message->to($request->email);
+            $message->subject('Email Verification');
+        });
+
+        return redirect('/sessions')->with('success', 'Email sent! Please check your email for verification.');
     }
 
     public function verifyAccount($token)
