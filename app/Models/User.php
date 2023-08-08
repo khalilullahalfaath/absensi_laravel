@@ -30,6 +30,7 @@ class User extends Authenticatable
         'jenis_kelamin',
         'tanggal_lahir',
         'role',
+        'email_verified_at',
     ];
 
     /**
