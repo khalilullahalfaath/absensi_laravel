@@ -28,7 +28,16 @@
                         </div>
                         <div class="form-group mb-3">
                             <label for="password">Password</label>
-                            <input type="password" name="password" class="form-control" value="{{Session::get('password')}}" required>
+                            <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" required>
+                            @error('password')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="password_confirmation">Confirm Password</label>
+                            <input type="password" name="password_confirmation" class="form-control" required>
                         </div>
                         <div class="form-group mb-3">
                             <label for="nama">Nama</label>

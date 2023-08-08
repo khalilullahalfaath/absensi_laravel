@@ -33,7 +33,7 @@ class AttendanceController extends Controller
             if (!$result['success']) {
                 // dd('Masuk');
                 // dd($result);
-                return redirect('home')->withErrors($result['message']);
+                return redirect('sessions/home')->withErrors($result['message']);
             }
         } else {
             // If an invalid attendance type is provided, redirect back with an error message
@@ -44,9 +44,9 @@ class AttendanceController extends Controller
 
         if ($result['success']) {
             // if success
-            return redirect('home')->with('success', 'absensi berhasil');
+            return redirect('sessions/home')->with('success', 'absensi berhasil');
         } else {
-            return redirect('home')->withErrors($result['message']);
+            return redirect('sessions/home')->withErrors($result['message']);
         }
     }
 
@@ -195,6 +195,8 @@ class AttendanceController extends Controller
 
             $onePM = \DateTime::createFromFormat('Y-m-d H:i', "{$inputDate} 13:00");
 
+
+
             if ($currentDateTime > $nineAM) {
                 $checkInData = [
                     'tanggal_presensi' => $currentDateTime->format('Y-m-d'),
@@ -202,6 +204,11 @@ class AttendanceController extends Controller
                     'user_id' => Auth::id(),
                     'status' => 'not check-in',
                 ];
+
+                // check if current date time is not above 1 PM
+                if ($currentDateTime < $onePM) {
+                    return ['success' => false, 'message' => 'You can only check out after 1 PM.'];
+                }
 
                 // create check-in record then get the id
                 AbsensiCheckIn::create($checkInData);

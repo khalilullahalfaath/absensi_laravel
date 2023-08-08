@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\UserVerify;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class SessionController extends Controller
 {
@@ -67,7 +69,7 @@ class SessionController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,',
-            'password' => 'required|string|min:8',
+            'password' => 'required|string|min:8|confirmed',
             'no_presensi' => 'required|string|max:255|unique:users,no_presensi,',
             'asal_instansi' => 'required|string|max:255',
             'nama_unit_kerja' => 'required|string|max:255',
@@ -83,6 +85,7 @@ class SessionController extends Controller
             'email.unique' => 'Email sudah terdaftar',
             'password.required' => 'Password harus diisi',
             'password.min' => 'Password minimal 8 karakter',
+            'password.confirmed' => 'Password tidak sama',
             'no_presensi.required' => 'Nomor presensi harus diisi',
             'no_presensi.unique' => 'Nomor presensi sudah terdaftar',
             'asal_instansi.required' => 'Asal instansi harus diisi',
@@ -111,13 +114,70 @@ class SessionController extends Controller
             // Attempt to create a new user in the database
             User::create($data);
 
+            $token = Str::random(60);
+
+            UserVerify::create([
+                'user_id' => User::where('email', $request->email)->first()->id,
+                'token' => $token
+            ]);
+
+            // Send verification email to the user
+            Mail::send('email.emailVerificationEmail', ['token' => $token], function ($message) use ($request) {
+                $message->to($request->email);
+                $message->subject('Email Verification');
+            });
+
             // If the user is created successfully, you can redirect or do something else
-            return redirect('/sessions')->with('success', 'Registration successful. You can now log in.');
+            return redirect('/sessions')->with('success', 'Registration successful. Please check your email for verification.');
         } catch (\Exception $e) {
             // If there's an error during the user creation, catch the exception
             // and handle the error accordingly (e.g., log the error, show an error message, etc.)
             // For debugging purposes, you can also use dd($e) to inspect the exception
             dd($e);
         }
+    }
+
+    public function reverifyEmail()
+    {
+        return view('sessions.resendVerification');
+    }
+
+    public function resendVerifyEmail(request $request)
+    {
+        $token = Str::random(60);
+
+        UserVerify::create([
+            'user_id' => User::where('email', $request->email)->first()->id,
+            'token' => $token
+        ]);
+
+        // Send verification email to the user
+        Mail::send('email.emailVerificationEmail', ['token' => $token], function ($message) use ($request) {
+            $message->to($request->email);
+            $message->subject('Email Verification');
+        });
+
+        return redirect('/sessions')->with('success', 'Email sent! Please check your email for verification.');
+    }
+
+    public function verifyAccount($token)
+    {
+        $verifyUser = UserVerify::where('token', $token)->first();
+
+        $message = 'Sorry your email cannot be identified.';
+
+        if (!is_null($verifyUser)) {
+            $user = $verifyUser->user;
+
+            if (!$user->email_verified_at) {
+                $verifyUser->user->email_verified_at = 1;
+                $verifyUser->user->save();
+                $message = 'Your email has been verified successfully. You can now login.';
+            } else {
+                $message = 'Your email is already verified. You can now login.';
+            }
+        }
+
+        return redirect('/sessions')->with('message', $message);
     }
 }

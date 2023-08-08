@@ -37,6 +37,14 @@
             <div class="mt-3 text-center">
                 <p>Don't have an account? <a href="/sessions/register">Register here</a></p>
             </div>
+
+            <div class="mt-3 text-center">
+                <p>Not verified yet? <a href="{{route('user.reverifyEmail')}}">Click here</a></p>
+            </div>
+
+            <div class="mt-3 text-center">
+                <p>Forgot your password? <a href="/sessions/forgot">Reset here</a></p>
+            </div>
         </div>
     </div>
 
