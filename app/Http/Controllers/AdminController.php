@@ -138,7 +138,7 @@ class AdminController extends Controller
         $csvData = "No, Id_user, nama_peserta, tanggal_presensi, jam_masuk, status\n";
 
         foreach ($checkInRecords as $key => $checkInRecord) {
-            $csvData .= $key + 1 . ", " . $checkInRecord->user_id . ", " . $checkInRecord->nama . ", " . $checkInRecord->tanggal_presensi . ", " . $checkInRecord->jam_masuk .  $checkInRecord->status . "\n";
+            $csvData .= $key + 1 . ", " . $checkInRecord->user_id . ", " . $checkInRecord->user->nama . ", " . $checkInRecord->tanggal_presensi . ", " . $checkInRecord->jam_masuk .  ", " . $checkInRecord->status . "\n";
         }
 
         $headers = [
