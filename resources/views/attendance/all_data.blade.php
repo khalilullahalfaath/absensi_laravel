@@ -9,7 +9,7 @@
         <h4>Keterangan</h4>
         <div class="d-flex align-items-center mt-2">
             <div class="legend-circle legend-green"></div>
-            <span class="ml-2">OK</span>
+            <span class="ml-2">Ontime</span>
         </div>
         <div class="d-flex align-items-center">
             <div class="legend-circle legend-red"></div>
