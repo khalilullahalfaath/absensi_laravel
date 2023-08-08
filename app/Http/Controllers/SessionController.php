@@ -69,7 +69,7 @@ class SessionController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,',
-            'password' => 'required|string|min:8',
+            'password' => 'required|string|min:8|confirmed',
             'no_presensi' => 'required|string|max:255|unique:users,no_presensi,',
             'asal_instansi' => 'required|string|max:255',
             'nama_unit_kerja' => 'required|string|max:255',
@@ -85,6 +85,7 @@ class SessionController extends Controller
             'email.unique' => 'Email sudah terdaftar',
             'password.required' => 'Password harus diisi',
             'password.min' => 'Password minimal 8 karakter',
+            'password.confirmed' => 'Password tidak sama',
             'no_presensi.required' => 'Nomor presensi harus diisi',
             'no_presensi.unique' => 'Nomor presensi sudah terdaftar',
             'asal_instansi.required' => 'Asal instansi harus diisi',
