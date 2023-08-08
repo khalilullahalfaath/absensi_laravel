@@ -43,7 +43,7 @@
             </div>
 
             <div class="mt-3 text-center">
-                <p>Forgot your password? <a href="/sessions/forgot">Reset here</a></p>
+                <p>Forgot your password? <a href="{{route('forget.password.get')}}">Reset here</a></p>
             </div>
         </div>
     </div>
