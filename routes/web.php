@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,10 +22,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/home', function () {
-    return view('home');
-})->name('home.user')->middleware('auth');
-
 // group sessions endpoint
 Route::group(['prefix' => 'sessions'], function () {
     Route::get('/', [SessionController::class, 'index'])->name('sessions');
@@ -32,7 +29,13 @@ Route::group(['prefix' => 'sessions'], function () {
     Route::post('/logout', [SessionController::class, 'logout'])->middleware('auth');
     Route::get('/register', [SessionController::class, 'register']);
     Route::post('/create', [SessionController::class, 'create']);
+
+    // group verify endpoint
+    Route::get('/home', [AuthController::class, 'home'])->middleware(['auth', 'verify_email'])->name('home.user');
+    Route::get('/verify/{token}', [AuthController::class, 'verifyAccount'])->name('user.verify');
 });
+
+
 
 // group auth middleware
 Route::group(['middleware' => 'auth'], function () {
