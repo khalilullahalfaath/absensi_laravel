@@ -80,12 +80,14 @@ Route::group(['middleware' => 'auth'], function () {
         // group user endpoint
         Route::group(['prefix' => 'users'], function () {
             Route::get('/', [UserController::class, 'showAllData'])->name('admin.users');
+
+            Route::get('/export', [UserController::class, 'printAllUsersToCSV'])->name('print.students.csv');
+
             Route::get('/{user}/edit', [UserController::class, 'editUser'])->name('admin.users.edit');
             Route::put('/{user}', [UserController::class, 'updateUser'])->name('admin.users.update');
             Route::get('/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 
             // export to csv all data
-            Route::get('/export', [UserController::class, 'printAllUsersToCSV'])->name('print.students.csv');
         });
 
         // group attendance endpoint
