@@ -5,7 +5,6 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\AttendanceController;
-use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,8 +30,8 @@ Route::group(['prefix' => 'sessions'], function () {
     Route::post('/create', [SessionController::class, 'create']);
 
     // group verify endpoint
-    Route::get('/home', [AuthController::class, 'home'])->middleware(['auth', 'verify_email'])->name('home.user');
-    Route::get('/verify/{token}', [AuthController::class, 'verifyAccount'])->name('user.verify');
+    Route::get('/home', [SessionController::class, 'home'])->middleware(['auth', 'verify_email'])->name('home.user');
+    Route::get('/verify/{token}', [SessionController::class, 'verifyAccount'])->name('user.verify');
 });
 
 
