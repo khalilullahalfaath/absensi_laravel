@@ -15,7 +15,7 @@
         </thead>
         <tbody>
             @foreach ($checkInRecords as $checkInRecord)
-            <tr class="{{ $checkInRecord->status === 'late' ? 'table-danger' : ($checkInRecord->status === 'not check-in' ? 'table-warning' : ($checkInRecord->status === 'ok' ? 'table-success' : '')) }}">
+            <tr class="{{ $checkInRecord->status === 'late' ? 'table-danger' : ($checkInRecord->status === 'not check-in' ? 'table-warning' : ($checkInRecord->status === 'ontime' ? 'table-success' : '')) }}">
                     <td>{{ $loop->iteration }}</td>
                     {{-- show some data relevant to checkin such as id_user which is a foreign key to users table --}}
                     <td>{{ optional($checkInRecord->user)->id ?? 'N/A' }}</td>
@@ -91,7 +91,7 @@
         </thead>
         <tbody>
             @foreach ($records as $record)
-            <tr class="{{ $record->absensiCheckIn->status === 'late' ? 'table-danger' : ($record->absensiCheckIn->status === 'not check-in' ? 'table-warning' : ($record->absensiCheckIn->status === 'ok' ? 'table-success' : '')) }}">
+            <tr class="{{ $record->absensiCheckIn->status === 'late' ? 'table-danger' : ($record->absensiCheckIn->status === 'not check-in' ? 'table-warning' : ($record->absensiCheckIn->status === 'ontime' ? 'table-success' : '')) }}">
                     <td>{{ $loop->iteration }}</td>
                     {{-- show some data relevant to record such as id_user which is a foreign key to users table --}}
                     <td>{{ optional($record->user)->id ?? 'N/A' }}</td>
