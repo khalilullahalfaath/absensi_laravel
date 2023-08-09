@@ -12,7 +12,7 @@
     </div>
     @endif
     <div class="container d-flex align-items-center" style="height: 100vh">
-        <div class="w-570 center border rounded px-3 py-3 mx-auto" style="background-color: rgba(255, 255, 255, 0.85);">
+        <div class="w-560 center border rounded px-3 py-3 mx-auto" style="background-color: rgba(255, 255, 255, 0.85);">
             <h1>Login</h1>
             <p>Khusus untuk Peserta PKL, Kerja Praktek, dan TA di Lingkungan PT. Len Industri (Persero)</p>
             <form action="/sessions/login" method="POST">
