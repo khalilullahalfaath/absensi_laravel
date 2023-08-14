@@ -15,13 +15,19 @@ class UserFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
+    public function definition()
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'nama' => $this->faker->name,
+            'email' => $this->faker->unique()->safeEmail,
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => bcrypt('password'), // Default password for all users (you can change this)
+            'no_presensi' => $this->faker->unique()->numberBetween(1000, 9999),
+            'asal_instansi' => $this->faker->company,
+            'nama_unit_kerja' => $this->faker->company,
+            'jenis_kelamin' => $this->faker->randomElement(['Male', 'Female']),
+            'tanggal_lahir' => $this->faker->date,
+            'role' => 'user', // Default role for all users (you can change this)
             'remember_token' => Str::random(10),
         ];
     }

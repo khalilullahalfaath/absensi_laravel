@@ -49,7 +49,6 @@
         $('#name').typeahead({
     source: function (query, process) {
         return $.get(route, { query: query }, function (data) {
-            console.log(data); // Debugging
             var names = data.map(item => item.nama);
             return process(names);
         });
