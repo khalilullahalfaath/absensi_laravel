@@ -30,6 +30,9 @@
         <span class="ml-2">Not Check-in. Created by System</span>
     </div>
 </div>
+<div class="d-flex justify-content-end">
+    <a href="{{ route('export.advanced.index') }}" class="btn btn-primary">Advanced Export</a>
+</div>
     <!-- Display Check-in Records -->
     <h4>Attendance Record</h4>
     @include('admin.pages.attendances._attendance_table')

@@ -184,4 +184,9 @@ class AdminController extends Controller
 
         return response($csvData, 200, $headers);
     }
+
+    function printToCSVAdvanced()
+    {
+        return view('admin.pages.attendances.exports');
+    }
 }

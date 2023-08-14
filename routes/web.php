@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ForgetPasswordController;
+use App\Http\Controllers\SearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -93,6 +94,15 @@ Route::group(['middleware' => 'auth'], function () {
         // group attendance endpoint
         Route::group(['prefix' => 'attendance'], function () {
             Route::get('/', [AdminController::class, 'adminAttendance'])->name('admin.attendance');
+
+            Route::group(['prefix' => 'export'], function () {
+                // export to csv advanced
+                Route::get('/advanced', [AdminController::class, 'printToCSVAdvanced'])->name('export.advanced.index');
+                Route::post('/advanced/result', [AdminController::class, 'printToCSVAdvancedExports'])->name('exports.export');
+                Route::get('/search/user', [SearchController::class, 'searchUser'])->name('search.user');
+            });
+
+
 
             // export to csv all data
             Route::get('/checkin/export', [AdminController::class, 'printAllCheckinRecordsToCSV'])->name('admin.print.allcheckin.csv');
