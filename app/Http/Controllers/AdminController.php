@@ -20,13 +20,19 @@ class AdminController extends Controller
     {
 
         // Get all check-in records
-        $checkInRecords = AbsensiCheckIn::all();
+        $checkInRecords = AbsensiCheckIn::query()
+            ->whereHas('user')
+            ->get();
 
         // Get all check-out records
-        $checkOutRecords = AbsensiCheckOut::all();
+        $checkOutRecords = AbsensiCheckOut::query()
+            ->whereHas('user')
+            ->get();
 
         // Get all records
-        $records = Record::all();
+        $records = Record::query()
+            ->whereHas('user')
+            ->get();
 
         return view('admin.pages.attendances.data_attendance', compact('checkInRecords', 'checkOutRecords', 'records'));
     }
@@ -134,7 +140,9 @@ class AdminController extends Controller
 
     public function printAllCheckinRecordsToCSV()
     {
-        $checkInRecords = AbsensiCheckIn::all();
+        $checkInRecords = AbsensiCheckIn::query()
+            ->whereHas('user')
+            ->get();
 
         $csvData = "No, Id_user, nama_peserta, tanggal_presensi, jam_masuk, status\n";
 
@@ -152,7 +160,9 @@ class AdminController extends Controller
 
     public function printAllCheckoutRecordsToCSV()
     {
-        $checkOutRecords = AbsensiCheckOut::all();
+        $checkOutRecords = AbsensiCheckOut::query()
+            ->whereHas('user')
+            ->get();
 
         $csvData = "No, Id_user, tanggal_presensi, jam_keluar\n";
 
@@ -170,7 +180,9 @@ class AdminController extends Controller
 
     public function printAllRecordsToCSV()
     {
-        $records = Record::all();
+        $records = Record::query()
+            ->whereHas('user')
+            ->get();
 
         $csvData = "No, Id_user, nama_peserta, tanggal_presensi, jam_masuk, jam_keluar, jam_kerja, status_check_in\n";
 
