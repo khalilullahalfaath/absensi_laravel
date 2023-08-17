@@ -1,7 +1,7 @@
 <!-- Check-in table -->
 <h5>Check-in Records</h5>
 <div class="table-responsive">
-    <table class="table table-striped">
+    <table class="table table-striped" id="checkins">
         <thead>
             <tr>
                 <th>No</th>
@@ -39,7 +39,7 @@
 <!-- Check-out table -->
 <h5>Check-out Records</h5>
 <div class="table-responsive">
-    <table class="table table-striped">
+    <table class="table table-striped" id="checkouts">
         <thead>
             <tr>
                 <th>No</th>
@@ -75,7 +75,7 @@
 <!-- Records table -->
 <h5>Records</h5>
 <div class="table-responsive">
-    <table class="table table-striped">
+    <table class="table table-striped" id="records">
         <thead>
             <tr>
                 <th>No</th>
@@ -113,3 +113,11 @@
 <div class="mt-3 mb-3 d-flex justify-content-center">
     <a href="{{ route('admin.print.allrecords.csv')}}" class="btn btn-primary">Download Record time Records</a>
 </div>
+
+<script>
+    $(document).ready(function() {
+      $('#checkins').DataTable();
+      $('#checkouts').DataTable();
+      $('#records').DataTable();
+  } );
+   </script>

@@ -1,9 +1,13 @@
 <!-- Main view displaying the user records -->
+<div class="mt-3 mb-3 d-flex justify-content-end">
+    <button class="btn btn-danger" id="deleteSelectedBtn">Delete Selected</button>
+</div>
 <div class="table-responsive">
-    <table class="table table-striped table-bordered">
+    <table class="table table-striped table-bordered" id="siswa">
         <thead>
             <!-- Table header -->
             <tr>
+
                 <th>No.</th>
                 <th>ID</th>
                 <th>Nama</th>
@@ -14,6 +18,8 @@
                 <th>Jenis Kelamin</th>
                 <th>Tanggal Lahir</th>
                 <th>Actions</th>
+                <th width="50px"><button type="button" name="bulk_delete" id="bulk_delete" class="btn btn-danger btn-xs">Delete</button></th>
+
             </tr>
         </thead>
         <tbody>
@@ -35,17 +41,21 @@
             
                     <!-- Delete button -->
                     <button class="btn btn-danger delete-btn" onclick="confirmDelete('{{ route('admin.users.destroy', $userRecord) }}')">Delete</button>
-
-                    
+                </td>
+                <td class="text-center">
+                    <input name='id[]' type="checkbox" id="checkItem_{{ $userRecord->id }}" 
+                        value="{{ $userRecord->id }}">
                 </td>
             </tr>
             @endforeach
         </tbody>
     </table>
 </div>
-<div class="mt-3 d-flex justify-content-center">
+<div class="mt-3 mb-5 d-flex justify-content-center">
     <a href="{{ route('print.students.csv') }}" class="btn btn-primary">Download Student Records</a>
 </div>
+
+
 
 <!-- Edit User Modal -->
 <div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true">
@@ -105,6 +115,54 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        var table = $('#siswa').DataTable({
+   'columnDefs': [
+      {
+         'targets': 0,
+         'checkboxes': {
+            'selectRow': true
+         }
+      }
+   ],
+   'select': {
+      'style': 'multi'
+   },
+   'order': [[1, 'asc']]
+});
+  } );
+
+  $(document).on('click', '#bulk_delete', function(){
+    var id = [];
+    if(confirm("Are you sure you want to Delete this data?")) {
+        $('input[name="id[]"]:checked').each(function(){
+            id.push($(this).val());
+        });
+        if(id.length > 0) {
+            $.ajax({
+                url:"{{ route('users.removeall')}}",
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                method:"get",
+                data:{id:id},
+                success:function(data) {
+                    console.log(data);
+                    alert(data);
+                    window.location.assign("users"); 
+                },
+                error: function(data) {
+                    var errors = data.responseJSON;
+                    console.log(errors);
+                }
+            });
+        }
+        else {
+            alert("Please select at least one checkbox");
+        }
+    }
+});
+   </script>
 
 
 

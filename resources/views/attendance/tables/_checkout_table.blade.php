@@ -1,5 +1,5 @@
 <div class="table-responsive">
-    <table class="table table-striped table-bordered">
+    <table class="table table-striped table-bordered" id="user_checkouts">
         <thead>
             <tr>
                 <th>Tanggal Presensi</th>
@@ -23,4 +23,10 @@
 <div class="mt-3 d-flex justify-content-center">
     <a href="{{ route('print.allcheckout.csv') }}" class="btn btn-primary">Print All Check-out to CSV</a>
 </div>
+
+<script>
+    $(document).ready(function() {
+      $('#user_checkouts').DataTable();
+  } );
+   </script>
 
