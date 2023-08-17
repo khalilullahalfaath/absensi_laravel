@@ -89,11 +89,6 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/{user}/edit', [UserController::class, 'editUser'])->name('admin.users.edit');
             Route::put('/{user}', [UserController::class, 'updateUser'])->name('admin.users.update');
             Route::get('/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
-
-
-
-
-            // export to csv all data
         });
 
         // group attendance endpoint
@@ -106,6 +101,9 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::post('/advanced/result', [AdminController::class, 'printToCSVAdvancedExports'])->name('exports.export');
                 Route::get('/search/user', [SearchController::class, 'searchUser'])->name('search.user');
             });
+            Route::get('/removeAllCheckins', [AjaxController::class, 'removeAllCheckins'])->name('checkins.removeall');
+            Route::get('/removeAllCheckouts', [AjaxController::class, 'removeAllCheckouts'])->name('checkouts.removeall');
+            Route::get('/removeAllRecords', [AjaxController::class, 'removeAllRecords'])->name('records.removeall');
 
             // export to csv all data
             Route::get('/checkin/export', [AdminController::class, 'printAllCheckinRecordsToCSV'])->name('admin.print.allcheckin.csv');
