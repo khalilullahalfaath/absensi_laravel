@@ -75,7 +75,7 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     // group admin endpoint
-    Route::group(['prefix' => 'admin'], function () {
+    Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
         Route::get('/', [AdminController::class, 'index'])->name('home.admin');
 
         // group user endpoint
