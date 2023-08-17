@@ -45,6 +45,7 @@
             @include('components.menu') <!-- Include regular user navigation bar -->
         @endif
     @endif
+    
     @yield('content')
 
     
