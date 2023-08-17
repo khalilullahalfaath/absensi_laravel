@@ -146,7 +146,11 @@ class AttendanceController extends Controller
             ->where('tanggal_presensi', $inputDate)
             ->first();
 
-        // dd($checkInRecord);
+        $sixPM = \DateTime::createFromFormat('Y-m-d H:i', "{$inputDate} 18:00");
+
+        if ($currentDateTime > $sixPM) {
+            return ['success' => false, 'message' => 'You can only check out before 6 PM.'];
+        }
 
         // find chekout record
         $checkOutRecord = AbsensiCheckOut::where('user_id', Auth::id())

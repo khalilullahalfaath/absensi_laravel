@@ -2,10 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ForgetPasswordController;
+use App\Http\Controllers\SearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +21,7 @@ use App\Http\Controllers\ForgetPasswordController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('sessions');
 });
 
 // group sessions endpoint
@@ -74,25 +76,34 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     // group admin endpoint
-    Route::group(['prefix' => 'admin'], function () {
+    Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
         Route::get('/', [AdminController::class, 'index'])->name('home.admin');
 
         // group user endpoint
         Route::group(['prefix' => 'users'], function () {
             Route::get('/', [UserController::class, 'showAllData'])->name('admin.users');
-
             Route::get('/export', [UserController::class, 'printAllUsersToCSV'])->name('print.students.csv');
+
+            Route::get('/removeAll', [AjaxController::class, 'removeAll'])->name('users.removeall');
 
             Route::get('/{user}/edit', [UserController::class, 'editUser'])->name('admin.users.edit');
             Route::put('/{user}', [UserController::class, 'updateUser'])->name('admin.users.update');
             Route::get('/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
-
-            // export to csv all data
         });
 
         // group attendance endpoint
         Route::group(['prefix' => 'attendance'], function () {
             Route::get('/', [AdminController::class, 'adminAttendance'])->name('admin.attendance');
+
+            Route::group(['prefix' => 'export'], function () {
+                // export to csv advanced
+                Route::get('/advanced', [AdminController::class, 'printToCSVAdvanced'])->name('export.advanced.index');
+                Route::post('/advanced/result', [AdminController::class, 'printToCSVAdvancedExports'])->name('exports.export');
+                Route::get('/search/user', [SearchController::class, 'searchUser'])->name('search.user');
+            });
+            Route::get('/removeAllCheckins', [AjaxController::class, 'removeAllCheckins'])->name('checkins.removeall');
+            Route::get('/removeAllCheckouts', [AjaxController::class, 'removeAllCheckouts'])->name('checkouts.removeall');
+            Route::get('/removeAllRecords', [AjaxController::class, 'removeAllRecords'])->name('records.removeall');
 
             // export to csv all data
             Route::get('/checkin/export', [AdminController::class, 'printAllCheckinRecordsToCSV'])->name('admin.print.allcheckin.csv');

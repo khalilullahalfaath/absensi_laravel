@@ -1,7 +1,8 @@
 <div class="table-responsive">
-    <table class="table table-striped table-bordered">
+    <table class="table table-striped table-bordered" id="user_records">
         <thead>
             <tr>
+                <th></th>
                 <th>Tanggal Presensi</th>
                 <th>Jam Masuk</th>
                 <th>Jam Keluar</th>
@@ -13,6 +14,7 @@
         <tbody>
             @foreach ($records as $record)
             <tr>
+                <th></th>
                 <td>{{ $record->absensiCheckin->tanggal_presensi }}</td>
                 <td>{{ $record->absensiCheckIn->jam_masuk }}</td>
                 <td>{{ $record->absensiCheckOut->jam_keluar }}</td>
@@ -29,3 +31,8 @@
 <div class="mt-3 mb-3 d-flex justify-content-center">
     <a href="{{ route('print.allrecords.csv') }}" class="btn btn-primary">Print All Records to CSV</a>
 </div>
+<script>
+    $(document).ready(function() {
+      $('#user_records').DataTable();
+  } );
+   </script>
