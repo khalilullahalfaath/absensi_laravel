@@ -102,8 +102,6 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/search/user', [SearchController::class, 'searchUser'])->name('search.user');
             });
 
-
-
             // export to csv all data
             Route::get('/checkin/export', [AdminController::class, 'printAllCheckinRecordsToCSV'])->name('admin.print.allcheckin.csv');
             Route::get('/checkout/export', [AdminController::class, 'printAllCheckoutRecordsToCSV'])->name('admin.print.allcheckout.csv');
