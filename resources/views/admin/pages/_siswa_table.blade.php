@@ -1,7 +1,4 @@
 <!-- Main view displaying the user records -->
-<div class="mt-3 mb-3 d-flex justify-content-end">
-    <button class="btn btn-danger" id="deleteSelectedBtn">Delete Selected</button>
-</div>
 <div class="table-responsive">
     <table class="table table-striped table-bordered" id="siswa">
         <thead>
