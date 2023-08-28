@@ -2,55 +2,76 @@
 <div class="modal fade" id="modal-create" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah Peserta Magang</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-
-                <div class="form-group">
-                    <label for="name" class="control-label">No. Presensi</label>
-                    <input type="text" class="form-control" id="nama_peserta">
-                    <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-nama_peserta"></div>
+            <form id="create-form"> <!-- Add the form element here -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Tambah Peserta Magang</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                
+                <div class="modal-body">
 
-                <div class="form-group">
-                    <label class="control-label">Nama Peserta</label>
-                    <input type="text" class="form-control" id="no_presensi">
-                    <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-no_presensi"></div>
+                    <div class="form-group">
+                        <label for="name" class="control-label">No. Presensi</label>
+                        <input type="text" class="form-control" id="no_presensi">
+                        <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-no_presensi"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Nama Peserta</label>
+                        <input type="text" class="form-control" id="nama_peserta">
+                        <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-nama_peserta"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Tanggal mulai</label>
+                        <input type="date" class="form-control" id="tanggal_mulai">
+                        <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-tanggal_mulai"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="" class="control-label">Tanggal berakhir</label>
+                        <input type="date" class="form-control" id="tanggal_berakhir">
+                        <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-tanggal_berakhir"></div>
+                    </div>
+
                 </div>
-
-                <div class="form-group">
-                    <label class="control-label">Tanggal mulai</label>
-                    <input type="date" class="form-control" id="tanggal_mulai">
-                    <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-tanggal_mulai"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="store">Save</button>
                 </div>
-
-                <div class="form-group">
-                    <label for="" class="control-label">Tanggal berakhir</label>
-                    <input type="date" class="form-control" id="tanggal_berakhir">
-                    <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-tanggal_berakhir"></div>
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="store">Save</button>
-            </div>
+            </form> <!-- Close the form element here -->
         </div>
     </div>
 </div>
 
 <script>
+    function displayAlert(field, message) {
+    if (message) {
+        var alertElement = $('#alert-' + field);
+        alertElement.removeClass('d-none').addClass('d-block').html(message);
+     }
+    }
+
     //button create post event
     $('body').on('click', '#btn-create-post', function () {
 
         //open modal
         $('#modal-create').modal('show');
     });
+
+    $('#modal-create').on('hidden.bs.modal', function () {
+        $(this).find('form').trigger('reset');
+        $('#alert-no_presensi').removeClass('d-block');
+        $('#alert-no_presensi').addClass('d-none');
+        $('#alert-nama_peserta').removeClass('d-block');
+        $('#alert-nama_peserta').addClass('d-none');
+        $('#alert-tanggal_mulai').removeClass('d-block');
+        $('#alert-tanggal_mulai').addClass('d-none');
+        $('#alert-tanggal_berakhir').removeClass('d-block');
+        $('#alert-tanggal_berakhir').addClass('d-none');
+    })
+
 
     //action create post
     $('#store').click(function(e) {
@@ -77,7 +98,6 @@
             },
 
             success:function(response){
-                console.log(response.data)
                 //show success message
                 Swal.fire({
                     type: 'success',
@@ -91,7 +111,7 @@
                 let pesertaMagang = `
 
                     <tr id="index_${response.data.id}">
-                        <td>${response.data.id}</td>
+                        <td></td>
                         <td>${response.data.nama_peserta}</td>
                         <td>${response.data.no_presensi}</td>
                         <td>${response.data.tanggal_mulai}</td>
@@ -105,8 +125,8 @@
                     </tr>
                 `;
                 
-                //prepend to table
-                $('#table-peserta').prepend(pesertaMagang);
+                //append to table
+                $('#table-peserta').append(pesertaMagang);
                 
                 //clear form
                 $('#nama_peserta').val('');
@@ -120,44 +140,12 @@
 
             },
             error:function(error){
-                
-                if(error.responseJSON.nama_peserta[0]) {
-
-                    //show alert
-                    $('#alert-nama_peserta').removeClass('d-none');
-                    $('#alert-nama_peserta').addClass('d-block');
-
-                    //add message to alert
-                    $('#alert-nama_peserta').html(error.responseJSON.nama_peserta[0]);
-                } 
-
-                if(error.responseJSON.no_presensi[0]) {
-
-                    //show alert
-                    $('#alert-no_presensi').removeClass('d-none');
-                    $('#alert-no_presensi').addClass('d-block');
-
-                    //add message to alert
-                    $('#alert-no_presensi').html(error.responseJSON.no_presensi[0]);
-                } 
-
-                if(error.responseJSON.tanggal_mulai[0]){
-                    //show alert
-                    $('#alert-tanggal_mulai').removeClass('d-none');
-                    $('#alert-tanggal_mulai').addClass('d-block');
-
-                    //add message to alert
-                    $('#alert-tanggal_mulai').html(error.responseJSON.tanggal_mulai[0]);
-                }
-
-                if(error.responseJSON.tanggal_berakhir[0]){
-                    //show alert
-                    $('#alert-tanggal_berakhir').removeClass('d-none');
-                    $('#alert-tanggal_berakhir').addClass('d-block');
-
-                    //add message to alert
-                    $('#alert-tanggal_berakhir').html(error.responseJSON.tanggal_berakhir[0]);
-                }
+                if (error.responseJSON) {
+                    displayAlert('no_presensi', error.responseJSON.no_presensi && error.responseJSON.no_presensi[0]);
+                    displayAlert('nama_peserta', error.responseJSON.nama_peserta && error.responseJSON.nama_peserta[0]);
+                    displayAlert('tanggal_mulai', error.responseJSON.tanggal_mulai && error.responseJSON.tanggal_mulai[0]);
+                    displayAlert('tanggal_berakhir', error.responseJSON.tanggal_berakhir && error.responseJSON.tanggal_berakhir[0]);
+        }
 
             }
 

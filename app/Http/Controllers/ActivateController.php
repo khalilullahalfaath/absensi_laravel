@@ -31,14 +31,24 @@ class ActivateController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'no_presensi' => 'required',
+            'no_presensi' => 'required|unique:peserta_magang,no_presensi',
             'nama_peserta' => 'required',
             'tanggal_mulai' => 'required',
             'tanggal_berakhir' => 'required',
         ]);
 
+        //check if validation fails
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator->errors(), 422);
+            return response()->json($validator->errors(), 422);
+        }
+
+        dd($request->all());
+        // check if tanggal mulai is greater than tanggal berakhir
+        if ($request->input('tanggal_mulai') > $request->input('tanggal_berakhir')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tanggal mulai tidak boleh lebih besar dari tanggal berakhir',
+            ], 400);
         }
 
         // create new peserta magang
@@ -49,7 +59,6 @@ class ActivateController extends Controller
             'tanggal_berakhir' => $request->input('tanggal_berakhir'),
             'status_peserta_aktif' => 1,
             'status_akun_aplikasi' => 0,
-
         ]);
 
         // return response
