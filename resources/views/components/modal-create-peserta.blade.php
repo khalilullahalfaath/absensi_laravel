@@ -77,6 +77,11 @@
     $('#store').click(function(e) {
         e.preventDefault();
 
+        $('#alert-no_presensi').removeClass('d-block').addClass('d-none').html('');
+        $('#alert-nama_peserta').removeClass('d-block').addClass('d-none').html('');
+        $('#alert-tanggal_mulai').removeClass('d-block').addClass('d-none').html('');
+        $('#alert-tanggal_berakhir').removeClass('d-block').addClass('d-none').html('');
+
         //define variable
         let nama_peserta   = $('#nama_peserta').val();
         let no_presensi = $('#no_presensi').val();
@@ -109,21 +114,28 @@
 
                 //data pesertaMagang
                 let pesertaMagang = `
-
-                    <tr id="index_${response.data.id}">
-                        <td></td>
-                        <td>${response.data.nama_peserta}</td>
-                        <td>${response.data.no_presensi}</td>
-                        <td>${response.data.tanggal_mulai}</td>
-                        <td>${response.data.tanggal_berakhir}</td>
-                        <td>${response.data.status_peserta_aktif}</td>
-                        <td>${response.data.status_akun_aplikasi}</td>
-                        <td class="text-center">
-                            <a href="javascript:void(0)" id="btn-edit-post" data-id="${response.data.id}" class="btn btn-primary btn-sm">Edit</a>
-                            <a href="javascript:void(0)" id="btn-delete-post" data-id="${response.data.id}" class="btn btn-danger btn-sm">Delete</a>
-                        </td>
-                    </tr>
-                `;
+                <tr id="index_${response.data.id}">
+                    <td></td>
+                    <td>${response.data.no_presensi}</td>
+                    <td>${response.data.nama_peserta}</td>
+                    <td>${response.data.tanggal_mulai}</td>
+                    <td>${response.data.tanggal_berakhir}</td>
+                    <td>
+                        <button class="btn ${response.data.status_peserta_aktif == 1 ? 'btn-success' : 'btn-danger'}">
+                            ${response.data.status_peserta_aktif == 1 ? 'Aktif' : 'Tidak Aktif'}
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn ${response.data.status_akun_aplikasi == 1 ? 'btn-success' : 'btn-danger'}">
+                            ${response.data.status_akun_aplikasi == 1 ? 'Aktif' : 'Tidak Aktif'}
+                        </button>
+                    </td>
+                    <td class="text-center">
+                        <a href="javascript:void(0)" id="btn-edit-post" data-id="${response.data.id}" class="btn btn-primary btn-sm">Edit</a>
+                        <a href="javascript:void(0)" id="btn-delete-post" data-id="${response.data.id}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            `;
                 
                 //append to table
                 $('#table-peserta').append(pesertaMagang);
@@ -137,10 +149,15 @@
                 //close modal
                 $('#modal-create').modal('hide');
                 
-
+                // Show the newly added row in DataTable
+                let newRow = $('#table-peserta').find(`#index_${response.data.id}`);
+                $('#table-peserta-d').DataTable().row(newRow).show();
             },
             error:function(error){
                 if (error.responseJSON) {
+                    // show error message for tanggal_masuk > tanggal_keluar
+                    console.log(error.responseJSON);
+
                     displayAlert('no_presensi', error.responseJSON.no_presensi && error.responseJSON.no_presensi[0]);
                     displayAlert('nama_peserta', error.responseJSON.nama_peserta && error.responseJSON.nama_peserta[0]);
                     displayAlert('tanggal_mulai', error.responseJSON.tanggal_mulai && error.responseJSON.tanggal_mulai[0]);

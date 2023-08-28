@@ -22,7 +22,7 @@
                     <table class="table table-bordered table-striped text-center" id="table-peserta-d">
                         <thead>
                             <tr>
-                                <th>No</th>
+                                <th></th>
                                 <th>No. Presensi</th>
                                 <th>Nama</th>
                                 <th>Tanggal Mulai</th>
@@ -35,13 +35,25 @@
                         <tbody id="table-peserta">
                             @foreach($data as $peserta)
                             <tr id="index_{{ $peserta->id }}">
-                                <td>{{$loop->iteration}}</td>
+                                <td></td>
                                 <td>{{$peserta->no_presensi }}</td>
                                 <td>{{$peserta->nama_peserta}}</td>
                                 <td>{{$peserta->tanggal_mulai}}</td>
                                 <td>{{$peserta->tanggal_berakhir}}</td>
-                                <td>{{$peserta->status_peserta_aktif}}</td>
-                                <td>{{$peserta->status_akun_aplikasi}}</td>
+                                <td>
+                                    @if($peserta->status_peserta_aktif == 1)
+                                        <button class="btn btn-success">Aktif</button>
+                                    @else
+                                        <button class="btn btn-danger">Tidak Aktif</button>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($peserta->status_akun_aplikasi == 1)
+                                        <button class="btn btn-success">Aktif</button>
+                                    @else
+                                        <button class="btn btn-danger">Tidak Aktif</button>
+                                    @endif
+                                </td>
 
                                 <td class="text-center">
                                     <a href="javascript:void(0)" id="btn-edit-peserta" data-id="{{ $peserta->id }}" class="btn btn-primary btn-sm">Edit</a>
@@ -59,8 +71,31 @@
 
 <script>
     // data table
-    $(document).ready(function() {
-        $('#table-peserta-d').DataTable();
-    });
+    // $(document).ready(function() {
+    //     $('#table-peserta-d').DataTable();
+    // });
+
+    const table = new DataTable('#table-peserta-d', {
+    columnDefs: [
+        {
+            searchable: false,
+            orderable: false,
+            targets: 0
+        }
+    ],
+    order: [[1, 'asc']]
+});
+ 
+table
+    .on('order.dt search.dt', function () {
+        let i = 1;
+ 
+        table
+            .cells(null, 0, { search: 'applied', order: 'applied' })
+            .every(function (cell) {
+                this.data(i++);
+            });
+    })
+    .draw();
 </script>
 @endsection

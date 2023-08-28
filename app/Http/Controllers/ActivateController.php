@@ -42,13 +42,9 @@ class ActivateController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        dd($request->all());
-        // check if tanggal mulai is greater than tanggal berakhir
+        // check if tanggal mulai is greater than tanggal berakhir and it's error for tanggal_mulai field in modal
         if ($request->input('tanggal_mulai') > $request->input('tanggal_berakhir')) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Tanggal mulai tidak boleh lebih besar dari tanggal berakhir',
-            ], 400);
+            return response()->json(['tanggal_mulai' => ['Tanggal mulai must be before tanggal berakhir.']], 422);
         }
 
         // create new peserta magang
