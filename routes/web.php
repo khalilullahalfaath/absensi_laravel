@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivateController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AjaxController;
@@ -78,6 +79,18 @@ Route::group(['middleware' => 'auth'], function () {
     // group admin endpoint
     Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
         Route::get('/', [AdminController::class, 'index'])->name('home.admin');
+
+        // group activate endpoint
+        Route::resource('/peserta', ActivateController::class)->names(
+            [
+                'index' => 'admin.activates.index',
+                'store' => 'admin.activates.store',
+                'show' => 'admin.activates.show',
+                'edit' => 'admin.activates.edit',
+                'update' => 'admin.activates.update',
+                'destroy' => 'admin.activates.destroy',
+            ]
+        );
 
         // group user endpoint
         Route::group(['prefix' => 'users'], function () {
