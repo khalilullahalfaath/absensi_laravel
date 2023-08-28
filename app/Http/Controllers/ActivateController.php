@@ -1,0 +1,89 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\PesertaMagang;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
+class ActivateController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $data = PesertaMagang::latest()->get();
+        return view('admin.pages.activates.index', compact('data'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'no_presensi' => 'required',
+            'nama_peserta' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator->errors(), 422);
+        }
+
+        // create new peserta magang
+        $pesertaMagang = PesertaMagang::create([
+            'no_presensi' => $request->input('no_presensi'),
+            'nama_peserta' => $request->input('nama_peserta'),
+            'status_peserta_aktif' => 1,
+            'status_akun_aplikasi' => 0,
+        ]);
+
+        // return response
+        return response()->json([
+            'success' => true,
+            'message' => 'Peserta magang created successfully',
+            'data' => $pesertaMagang,
+        ], 201);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
+    }
+}
