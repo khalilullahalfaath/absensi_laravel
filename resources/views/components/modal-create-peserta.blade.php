@@ -23,6 +23,18 @@
                     <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-no_presensi"></div>
                 </div>
 
+                <div class="form-group">
+                    <label class="control-label">Tanggal mulai</label>
+                    <input type="date" class="form-control" id="tanggal_mulai">
+                    <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-tanggal_mulai"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="control-label">Tanggal berakhir</label>
+                    <input type="date" class="form-control" id="tanggal_berakhir">
+                    <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-tanggal_berakhir"></div>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -47,6 +59,8 @@
         //define variable
         let nama_peserta   = $('#nama_peserta').val();
         let no_presensi = $('#no_presensi').val();
+        let tanggal_mulai = $('#tanggal_mulai').val();
+        let tanggal_berakhir = $('#tanggal_berakhir').val();
         let token   = $("meta[name='csrf-token']").attr("content");
         
         //ajax
@@ -57,12 +71,13 @@
             data: {
                 "nama_peserta": nama_peserta,
                 "no_presensi": no_presensi,
+                "tanggal_mulai": tanggal_mulai,
+                "tanggal_berakhir": tanggal_berakhir,
                 "_token": token
             },
 
             success:function(response){
-                console.log(response.data);
-
+                console.log(response.data)
                 //show success message
                 Swal.fire({
                     type: 'success',
@@ -79,6 +94,8 @@
                         <td>${response.data.id}</td>
                         <td>${response.data.nama_peserta}</td>
                         <td>${response.data.no_presensi}</td>
+                        <td>${response.data.tanggal_mulai}</td>
+                        <td>${response.data.tanggal_berakhir}</td>
                         <td>${response.data.status_peserta_aktif}</td>
                         <td>${response.data.status_akun_aplikasi}</td>
                         <td class="text-center">
@@ -88,12 +105,14 @@
                     </tr>
                 `;
                 
-                //append to table
+                //prepend to table
                 $('#table-peserta').prepend(pesertaMagang);
                 
                 //clear form
                 $('#nama_peserta').val('');
                 $('#no_presensi').val('');
+                $('#tanggal_mulai').val('');
+                $('#tanggal_berakhir').val('');
 
                 //close modal
                 $('#modal-create').modal('hide');
@@ -121,6 +140,24 @@
                     //add message to alert
                     $('#alert-no_presensi').html(error.responseJSON.no_presensi[0]);
                 } 
+
+                if(error.responseJSON.tanggal_mulai[0]){
+                    //show alert
+                    $('#alert-tanggal_mulai').removeClass('d-none');
+                    $('#alert-tanggal_mulai').addClass('d-block');
+
+                    //add message to alert
+                    $('#alert-tanggal_mulai').html(error.responseJSON.tanggal_mulai[0]);
+                }
+
+                if(error.responseJSON.tanggal_berakhir[0]){
+                    //show alert
+                    $('#alert-tanggal_berakhir').removeClass('d-none');
+                    $('#alert-tanggal_berakhir').addClass('d-block');
+
+                    //add message to alert
+                    $('#alert-tanggal_berakhir').html(error.responseJSON.tanggal_berakhir[0]);
+                }
 
             }
 

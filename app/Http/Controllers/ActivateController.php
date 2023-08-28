@@ -33,6 +33,8 @@ class ActivateController extends Controller
         $validator = Validator::make($request->all(), [
             'no_presensi' => 'required',
             'nama_peserta' => 'required',
+            'tanggal_mulai' => 'required',
+            'tanggal_berakhir' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -43,8 +45,11 @@ class ActivateController extends Controller
         $pesertaMagang = PesertaMagang::create([
             'no_presensi' => $request->input('no_presensi'),
             'nama_peserta' => $request->input('nama_peserta'),
+            'tanggal_mulai' => $request->input('tanggal_mulai'),
+            'tanggal_berakhir' => $request->input('tanggal_berakhir'),
             'status_peserta_aktif' => 1,
             'status_akun_aplikasi' => 0,
+
         ]);
 
         // return response

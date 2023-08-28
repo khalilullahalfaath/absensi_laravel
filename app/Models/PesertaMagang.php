@@ -13,6 +13,8 @@ class PesertaMagang extends Model
     protected $fillable = [
         'nama_peserta',
         'no_presensi',
+        'tanggal_mulai',
+        'tanggal_berakhir',
         'status_peserta_aktif',
         'status_akun_aplikasi',
     ];

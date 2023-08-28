@@ -25,6 +25,8 @@
                                 <th>No</th>
                                 <th>No. Presensi</th>
                                 <th>Nama</th>
+                                <th>Tanggal Mulai</th>
+                                <th>Tanggal Berakhir</th>
                                 <th>Status Peserta</th>
                                 <th>Status Akun</th>
                                 <th>Aksi</th>
@@ -34,10 +36,13 @@
                             @foreach($data as $peserta)
                             <tr id="index_{{ $peserta->id }}">
                                 <td>{{$loop->iteration}}</td>
-                                <td>{{ $peserta->no_presensi }}</td>
-                                <td>{{ $peserta->nama_peserta}}</td>
+                                <td>{{$peserta->no_presensi }}</td>
+                                <td>{{$peserta->nama_peserta}}</td>
+                                <td>{{$peserta->tanggal_mulai}}</td>
+                                <td>{{$peserta->tanggal_berakhir}}</td>
                                 <td>{{$peserta->status_peserta_aktif}}</td>
                                 <td>{{$peserta->status_akun_aplikasi}}</td>
+
                                 <td class="text-center">
                                     <a href="javascript:void(0)" id="btn-edit-peserta" data-id="{{ $peserta->id }}" class="btn btn-primary btn-sm">Edit</a>
                                     <a href="javascript:void(0)" id="btn-delete-peserta" data-id="{{ $peserta->id }}" class="btn btn-danger btn-sm">Delete</a>
