@@ -68,6 +68,8 @@
     </div>
 </div>
 @include('components.modal-create-peserta')
+@include('components.modal-edit-peserta')
+@include('components.delete-peserta')
 
 <script>
     // data table

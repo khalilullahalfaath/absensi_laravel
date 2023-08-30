@@ -1,3 +1,6 @@
+<head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
 <!-- Modal -->
 <div class="modal fade" id="modal-create" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -131,8 +134,8 @@
                         </button>
                     </td>
                     <td class="text-center">
-                        <a href="javascript:void(0)" id="btn-edit-post" data-id="${response.data.id}" class="btn btn-primary btn-sm">Edit</a>
-                        <a href="javascript:void(0)" id="btn-delete-post" data-id="${response.data.id}" class="btn btn-danger btn-sm">Delete</a>
+                        <a href="javascript:void(0)" id="btn-edit-peserta" data-id="${response.data.id}" class="btn btn-primary btn-sm">Edit</a>
+                        <a href="javascript:void(0)" id="btn-delete-peserta" data-id="${response.data.id}" class="btn btn-danger btn-sm">Delete</a>
                     </td>
                 </tr>
             `;

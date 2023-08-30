@@ -81,16 +81,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/', [AdminController::class, 'index'])->name('home.admin');
 
         // group activate endpoint
-        Route::resource('/peserta', ActivateController::class)->names(
-            [
-                'index' => 'admin.activates.index',
-                'store' => 'admin.activates.store',
-                'show' => 'admin.activates.show',
-                'edit' => 'admin.activates.edit',
-                'update' => 'admin.activates.update',
-                'destroy' => 'admin.activates.destroy',
-            ]
-        );
+        Route::resource('/peserta', ActivateController::class)->parameters(['peserta' => 'pesertaMagang']);;
 
         // group user endpoint
         Route::group(['prefix' => 'users'], function () {
