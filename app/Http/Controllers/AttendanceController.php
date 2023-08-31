@@ -45,7 +45,7 @@ class AttendanceController extends Controller
 
         // validate latitude and longitude
         if (!$latitude || !$longitude) {
-            return redirect()->route('user.attendance')->withErrors('Invalid location.');
+            return redirect('sessions/home')->withErrors('Invalid location.');
         }
 
         // define the target latitude and longitude
