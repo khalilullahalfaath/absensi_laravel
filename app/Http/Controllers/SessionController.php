@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PesertaMagang;
 use App\Models\User;
 use App\Models\UserVerify;
 use Illuminate\Http\Request;
@@ -31,6 +32,13 @@ class SessionController extends Controller
             'email.exists' => 'Email tidak ditemukan',
             'password.required' => 'Password harus diisi'
         ]);
+
+        // check if peserta_magang table is exist and it's status_peserta_aktif is true
+        $check = PesertaMagang::where('no_presensi', User::where('email', $request->email)->first()->no_presensi)->first();
+
+        if (!$check) {
+            return redirect()->back()->withErrors('Maaf akun anda tidak aktif!');
+        }
 
         $infologin = [
             'email' => $request->email,
@@ -77,7 +85,6 @@ class SessionController extends Controller
             'tanggal_lahir' => 'required|date',
         ], [
             // custom error message
-
             'nama.required' => 'Nama harus diisi',
             'nama.max' => 'Nama maksimal 255 karakter',
             'email.required' => 'Email harus diisi',
@@ -96,6 +103,22 @@ class SessionController extends Controller
             'tanggal_lahir.required' => 'Tanggal lahir harus diisi',
             'tanggal_lahir.date' => 'Tanggal lahir tidak valid'
         ]);
+
+        // check if the no_presensi is exist and it's status_peserta_aktif is true, the name is same as the register name. 
+        // If it's not then return error in the same page
+        $check = PesertaMagang::where('no_presensi', $request->no_presensi)->first();
+
+        if (!$check) {
+            return redirect()->back()->withErrors('Nomor presensi tidak ditemukan!');
+        }
+
+        if ($check->status_peserta_aktif == 0) {
+            return redirect()->back()->withErrors('Nomor presensi tidak aktif!');
+        }
+
+        if ($check->nama_peserta != $request->nama) {
+            return redirect()->back()->withErrors('Nama tidak sesuai dengan nomor presensi!');
+        }
 
         $data = [
             'nama' => $request->nama,
@@ -173,6 +196,17 @@ class SessionController extends Controller
                 $verifyUser->user->email_verified_at = 1;
                 $verifyUser->user->save();
                 $message = 'Your email has been verified successfully. You can now login.';
+
+                // activate status_akun_aplikasi to 1 in peserta_magang table
+                $pesertaMagang = PesertaMagang::where('no_presensi', $user->no_presensi)->first();
+                $pesertaMagang->status_akun_aplikasi = 1;
+
+                // connect peserta_magang table to user table
+                $user_account = User::where('no_presensi', $user->no_presensi)->first();
+                $user_account->peserta_magang_id = $pesertaMagang->id;
+
+                $pesertaMagang->save();
+                $user_account->save();
             } else {
                 $message = 'Your email is already verified. You can now login.';
             }

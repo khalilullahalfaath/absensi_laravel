@@ -17,6 +17,11 @@
                     <a class="nav-link" aria-current="page" href="{{route('home.admin')}}">Home</a>
                 </li>
 
+                {{-- Tambah peserta --}}
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{{route('peserta.index')}}">Peserta</a>
+                </li>
+
                 <!-- Data Siswa link -->
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="{{route('admin.users')}}">Data Siswa</a>

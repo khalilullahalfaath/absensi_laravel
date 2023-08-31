@@ -9,7 +9,6 @@ use App\Models\AbsensiCheckOut;
 use App\Models\Record;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Response;
-use PDF;
 
 class AttendanceController extends Controller
 {
@@ -19,8 +18,52 @@ class AttendanceController extends Controller
         return view('attendance.index');
     }
 
+    function computeDistance($lat1, $lng1, $lat2, $lng2, $radius = 6378137)
+    {
+        static $x = M_PI / 180;
+        $lat1 *= $x;
+        $lng1 *= $x;
+        $lat2 *= $x;
+        $lng2 *= $x;
+        $distance = 2 * asin(sqrt(pow(sin(($lat1 - $lat2) / 2), 2) + cos($lat1) * cos($lat2) * pow(sin(($lng1 - $lng2) / 2), 2)));
+
+        // dd($distance);
+
+        return $distance * $radius;
+    }
+
+
     public function create(Request $request)
     {
+        // Validate the location input
+        $latitude = $request->input('latitude');
+        $longitude = $request->input('longitude');
+
+
+
+        // dd($latitude, $longitude);
+
+        // validate latitude and longitude
+        if (!$latitude || !$longitude) {
+            return redirect()->route('user.attendance')->withErrors('Invalid location.');
+        }
+
+        // define the target latitude and longitude
+        $targetLatitude = -6.949960;
+        $targetLongitude = 107.619321;
+
+        // calculate the distance between the target location and the input location
+        $distance = $this->computeDistance($latitude, $longitude, $targetLatitude, $targetLongitude);
+
+
+        // dd($distance);
+
+
+        // if the distance is more than 1 km, redirect back with an error message
+        if ($distance > 100) {
+            return redirect('sessions/home')->withErrors('You are not within the office area.');
+        }
+
         // Get the attendance type from the request
         $attendanceType = $request->input('attendance_type');
 
@@ -37,7 +80,7 @@ class AttendanceController extends Controller
             }
         } else {
             // If an invalid attendance type is provided, redirect back with an error message
-            return redirect('attendance')->withErrors('Invalid attendance type.');
+            return redirect('sessions/home')->withErrors('You are not within the office area.');
         }
 
         // dd($result);
