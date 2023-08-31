@@ -23,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('peserta)magang', function (Blueprint $table) {
+        Schema::table('peserta_magang', function (Blueprint $table) {
             $table->dropColumn('tanggal_mulai');
             $table->dropColumn('tanggal_berakhir');
         });
