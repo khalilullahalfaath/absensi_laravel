@@ -21,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
         Validator::extend('exists_not_soft_deleted', function ($attribute, $value, $parameters, $validator) {
             return User::where('email', $value)->whereNull('deleted_at')->exists();
         });

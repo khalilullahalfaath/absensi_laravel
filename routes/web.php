@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ForgetPasswordController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\SearchController;
 
 /*
@@ -20,6 +21,7 @@ use App\Http\Controllers\SearchController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 
 Route::get('/', function () {
     return redirect('sessions');
@@ -79,6 +81,9 @@ Route::group(['middleware' => 'auth'], function () {
     // group admin endpoint
     Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
         Route::get('/', [AdminController::class, 'index'])->name('home.admin');
+
+        // group location endpoint
+        Route::resource('/location', LocationController::class);
 
         // group activate endpoint
         Route::resource('/peserta', ActivateController::class)->parameters(['peserta' => 'pesertaMagang']);;
