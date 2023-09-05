@@ -17,6 +17,11 @@
                     <a class="nav-link" aria-current="page" href="{{route('home.admin')}}">Home</a>
                 </li>
 
+                {{-- Matikan Permission Location --}}
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{{route('location.index')}}">Lokasi</a>
+                </li>
+
                 {{-- Tambah peserta --}}
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="{{route('peserta.index')}}">Peserta</a>
