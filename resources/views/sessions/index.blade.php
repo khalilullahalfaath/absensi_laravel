@@ -18,7 +18,7 @@
             <form action="/sessions/login" method="POST">
                 @csrf
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
+                    <label for="email" id="email" class="form-label">Email</label>
                     <input type="email" value="{{ Session::get('email')}}" name="email" class="form-control">
                 </div>
                 <div class="mb-3">

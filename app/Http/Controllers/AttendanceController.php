@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\LocationCheck;
 use App\Models\AbsensiCheckIn;
 use App\Models\AbsensiCheckOut;
 use App\Models\Record;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Response;
 
 class AttendanceController extends Controller
 {
@@ -35,33 +34,30 @@ class AttendanceController extends Controller
 
     public function create(Request $request)
     {
-        // Validate the location input
-        $latitude = $request->input('latitude');
-        $longitude = $request->input('longitude');
+        // check if location is active
+        $location_checker = LocationCheck::first();
 
+        if ($location_checker->is_active != false) {
+            // Validate the location input
+            $latitude = $request->input('latitude');
+            $longitude = $request->input('longitude');
 
+            // validate latitude and longitude
+            if (!$latitude || !$longitude) {
+                return redirect('sessions/home')->withErrors('Invalid location.');
+            }
 
-        // dd($latitude, $longitude);
+            // define the target latitude and longitude
+            $targetLatitude = -6.949960;
+            $targetLongitude = 107.619321;
 
-        // validate latitude and longitude
-        if (!$latitude || !$longitude) {
-            return redirect('sessions/home')->withErrors('Invalid location.');
-        }
+            // calculate the distance between the target location and the input location
+            $distance = $this->computeDistance($latitude, $longitude, $targetLatitude, $targetLongitude);
 
-        // define the target latitude and longitude
-        $targetLatitude = -6.949960;
-        $targetLongitude = 107.619321;
-
-        // calculate the distance between the target location and the input location
-        $distance = $this->computeDistance($latitude, $longitude, $targetLatitude, $targetLongitude);
-
-
-        // dd($distance);
-
-
-        // if the distance is more than 1 km, redirect back with an error message
-        if ($distance > 100) {
-            return redirect('sessions/home')->withErrors('You are not within the office area.');
+            // if the distance is more than 1 km, redirect back with an error message
+            if ($distance > 100) {
+                return redirect('sessions/home')->withErrors('You are not within the office area.');
+            }
         }
 
         // Get the attendance type from the request
@@ -193,6 +189,13 @@ class AttendanceController extends Controller
 
         if ($currentDateTime > $sixPM) {
             return ['success' => false, 'message' => 'You can only check out before 6 PM.'];
+        }
+
+        // one PM
+        $onePM = \DateTime::createFromFormat('Y-m-d H:i', "{$inputDate} 13:00");
+
+        if ($currentDateTime < $onePM) {
+            return ['success' => false, 'message' => 'You can only check out after 1 PM.'];
         }
 
         // find chekout record
