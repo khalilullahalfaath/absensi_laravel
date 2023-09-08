@@ -89,6 +89,8 @@ class ActivateController extends Controller
             'nama_peserta' => 'required',
             'tanggal_mulai' => 'required',
             'tanggal_berakhir' => 'required',
+            'status_peserta_aktif' => 'required',
+            'status_akun_aplikasi' => 'required',
         ]);
 
         //check if validation fails
@@ -107,6 +109,8 @@ class ActivateController extends Controller
             'nama_peserta' => $request->input('nama_peserta'),
             'tanggal_mulai' => $request->input('tanggal_mulai'),
             'tanggal_berakhir' => $request->input('tanggal_berakhir'),
+            'status_peserta_aktif' => $request->input('status_peserta_aktif'),
+            'status_akun_aplikasi' => $request->input('status_akun_aplikasi'),
         ]);
 
         // return response

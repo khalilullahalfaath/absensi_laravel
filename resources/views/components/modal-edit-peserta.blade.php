@@ -38,6 +38,14 @@
                         <input type="date" class="form-control" id="tanggal_berakhir-edit">
                         <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-tanggal_berakhir-edit"></div>
                     </div>
+                    <div class="form-group mt-3">
+                        <label for="status_peserta-edit" class="control-label">Status Peserta Aktif</label>
+                        <input type="checkbox" class="form-check-input" id="status_peserta-edit" name="status_peserta_edit">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="status_aplikasi-edit" class="control-label">Status Akun Aplikasi Aktif</label>
+                        <input type="checkbox" class="form-check-input" id="status_aplikasi-edit" name="status_aplikasi-edit">
+                    </div>
 
                 </div>
                 <div class="modal-footer">
@@ -75,6 +83,8 @@
                 $('#nama_peserta-edit').val(response.data.nama_peserta);
                 $('#tanggal_mulai-edit').val(response.data.tanggal_mulai);
                 $('#tanggal_berakhir-edit').val(response.data.tanggal_berakhir);
+                $('#status_peserta-edit').prop('checked', response.data.status_peserta_aktif == 1 ? true : false);
+                $('#status_aplikasi-edit').prop('checked', response.data.status_akun_aplikasi == 1 ? true : false);
 
                 //open modal
                 $('#modal-edit').modal('show');
@@ -113,6 +123,8 @@
         let no_presensi = $('#no_presensi-edit').val();
         let tanggal_mulai = $('#tanggal_mulai-edit').val();
         let tanggal_berakhir = $('#tanggal_berakhir-edit').val();
+        let status_peserta_aktif = $('#status_peserta-edit').prop('checked') == true ? 1 : 0;
+        let status_akun_aplikasi = $('#status_aplikasi-edit').prop('checked') == true ? 1 : 0;
         let token   = $("meta[name='csrf-token']").attr("content");
         
         //ajax
@@ -125,6 +137,8 @@
                 "no_presensi": no_presensi,
                 "tanggal_mulai": tanggal_mulai,
                 "tanggal_berakhir": tanggal_berakhir,
+                "status_peserta_aktif": status_peserta_aktif,
+                "status_akun_aplikasi": status_akun_aplikasi,
                 "_token": token
             },
 

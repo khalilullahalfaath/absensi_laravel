@@ -8,8 +8,9 @@
 
 <div class="container mt-5">
     <div class="card">
-        <div class="card-header">
+        <div class="card-header text-center">
             <h1 class="text-center">Location Check Settings</h1>
+            <p>If this button is unchecked, then the location when user submit attendance will not be validated</p>
         </div>
         <div class="card-body">
             <form action="{{ route('location.store') }}" method="POST">
